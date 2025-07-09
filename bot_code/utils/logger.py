@@ -76,7 +76,9 @@ def setup_logger(name: str, level: str = 'INFO', log_dir: str = 'logs') -> loggi
     
     # Create logger
     logger = logging.getLogger(name)
-    logger.setLevel(getattr(logging, level.upper()))
+    #logger.setLevel(getattr(logging, level.upper()))
+    actual_log_level_enum = getattr(logging, level.upper(), logging.INFO)
+    logger.setLevel(actual_log_level_enum)
     
     # Avoid duplicate handlers
     if logger.handlers:
@@ -94,7 +96,8 @@ def setup_logger(name: str, level: str = 'INFO', log_dir: str = 'logs') -> loggi
     
     # Console handler with colors
     console_handler = logging.StreamHandler(sys.stdout)
-    console_handler.setLevel(logging.INFO)
+    # ENSURE THE CONSOLE HANDLER'S LEVEL MATCHES THE LOGGER'S LEVEL:
+    console_handler.setLevel(actual_log_level_enum)  # <--- MODIFIED THIS LINE
     console_formatter = ColoredConsoleFormatter(
         '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
     )
@@ -161,7 +164,13 @@ def setup_logger(name: str, level: str = 'INFO', log_dir: str = 'logs') -> loggi
     trading_handler.addFilter(lambda record: getattr(record, 'log_type', None) == 'trading')
     logger.addHandler(trading_handler)
     
-    logger.info(f"Logger '{name}' initialized with instance ID: {bot_instance_id}")
+    #logger.info(f"Logger '{name}' initialized with instance ID: {bot_instance_id}")
+    
+    # ... (other handlers like file_handler, json_handler should already be DEBUG or appropriate) ...
+    # Add a test print and a debug log at the end of setup_logger:
+    print(f"[DEBUG] Logger '{{name}}' configured by setup_logger with actual effective level: {{logging.getLevelName(logger.getEffectiveLevel())}}")
+    logger.info(f"Logger '{{name}}' initialized (instance: {{bot_instance_id}}) at effective level {{logging.getLevelName(logger.getEffectiveLevel())}}.")
+    logger.debug(f"This is a test DEBUG message from logger '{{name}}' to confirm DEBUG output.")
     
     return logger
 
@@ -342,6 +351,14 @@ def setup_application_logging(app_name: str = 'SolanaMemecoinBot',
     main_logger = setup_logger(app_name, log_level, log_dir)
     
     # Log application startup
+    # --- Make PRAW loggers verbose for debugging ---
+    import logging # Ensure logging is imported in this file if not already
+    logging.getLogger("praw").setLevel(logging.DEBUG)
+    logging.getLogger("prawcore").setLevel(logging.DEBUG)
+    # Use the logger instance from your function if available, otherwise print:
+    # logger.info("PRAW and PRAWCORE loggers set to DEBUG level.") 
+    print("[DEBUG] utils.logger: PRAW and PRAWCORE loggers set to DEBUG level.")
+    # --- End PRAW logger verbosity ---
     main_logger.info(f"Application logging initialized")
     main_logger.info(f"Log level: {log_level}")
     main_logger.info(f"Log directory: {log_dir}")
@@ -392,6 +409,8 @@ def cleanup_old_logs(log_dir: str = 'logs', days_to_keep: int = 30):
     except Exception as e:
         print(f"Error cleaning up logs: {e}")
 
-def setup_logging():
-    """Simple setup function for compatibility"""
-    return setup_application_logging()
+def setup_logging(app_name: str = 'SolanaMemecoinBot', 
+                  log_level: str = 'INFO', 
+                  log_dir: str = 'logs'):
+    """Passes arguments to the main setup_application_logging function."""
+    return setup_application_logging(app_name=app_name, log_level=log_level, log_dir=log_dir)
