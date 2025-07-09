@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Solana Memecoin Trading Bot{% endblock %}</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Socket.IO -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js"></script>
+    
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            --primary-color: #6f42c1;
+            --secondary-color: #495057;
+            --success-color: #198754;
+            --danger-color: #dc3545;
+            --warning-color: #fd7e14;
+            --info-color: #0dcaf0;
+            --dark-color: #212529;
+            --light-color: #f8f9fa;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .sidebar {
+            background: linear-gradient(180deg, var(--primary-color) 0%, #5a32a3 100%);
+            min-height: 100vh;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+        }
+
+        .sidebar .nav-link {
+            color: rgba(255,255,255,0.8);
+            border-radius: 8px;
+            margin: 2px 0;
+            transition: all 0.3s;
+        }
+
+        .sidebar .nav-link:hover,
+        .sidebar .nav-link.active {
+            color: white;
+            background-color: rgba(255,255,255,0.1);
+        }
+
+        .sidebar .nav-link i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .main-content {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin: 20px;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .navbar-custom {
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-radius: 12px 12px 0 0;
+        }
+
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+            animation: pulse 2s infinite;
+        }
+
+        .status-running { background-color: var(--success-color); }
+        .status-stopped { background-color: var(--danger-color); }
+        .status-paused { background-color: var(--warning-color); }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .card-stat {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            transition: transform 0.3s;
+        }
+
+        .card-stat:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-success {
+            background: linear-gradient(135deg, #56ab2f 0%, #a8e6cf 100%);
+        }
+
+        .card-danger {
+            background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
+        }
+
+        .card-warning {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .card-info {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .btn-custom {
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .btn-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .table-custom {
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .table-custom thead {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .notification-toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            max-width: 400px;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .metric-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+
+        .metric-card:hover {
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .metric-label {
+            color: var(--secondary-color);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .connection-status {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            z-index: 1000;
+        }
+
+        .connected {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        .disconnected {
+            background-color: var(--danger-color);
+            color: white;
+        }
+    </style>
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-3 col-lg-2 sidebar">
+                <div class="p-3">
+                    <h4 class="text-white mb-4">
+                        <i class="fas fa-robot me-2"></i>
+                        Memecoin Bot
+                    </h4>
+                    
+                    <nav class="nav flex-column">
+                        <a class="nav-link {% if request.endpoint == 'dashboard' %}active{% endif %}" href="{{ url_for('dashboard') }}">
+                            <i class="fas fa-tachometer-alt me-2"></i>
+                            Dashboard
+                        </a>
+                        <a class="nav-link {% if request.endpoint == 'positions' %}active{% endif %}" href="{{ url_for('positions') }}">
+                            <i class="fas fa-chart-line me-2"></i>
+                            Positions
+                        </a>
+                        <a class="nav-link {% if request.endpoint == 'discoveries' %}active{% endif %}" href="{{ url_for('discoveries') }}">
+                            <i class="fas fa-search me-2"></i>
+                            Discoveries
+                        </a>
+                        <a class="nav-link {% if request.endpoint == 'analytics' %}active{% endif %}" href="{{ url_for('analytics') }}">
+                            <i class="fas fa-chart-bar me-2"></i>
+                            Analytics
+                        </a>
+                        <a class="nav-link {% if request.endpoint == 'settings' %}active{% endif %}" href="{{ url_for('settings') }}">
+                            <i class="fas fa-cog me-2"></i>
+                            Settings
+                        </a>
+                    </nav>
+                </div>
+            </div>
+            
+            <!-- Main Content -->
+            <div class="col-md-9 col-lg-10 p-0">
+                <div class="main-content">
+                    <!-- Top Navigation -->
+                    <nav class="navbar navbar-expand-lg navbar-custom px-4 py-3">
+                        <div class="d-flex align-items-center">
+                            <span class="status-indicator" id="botStatus"></span>
+                            <span id="botStatusText">Loading...</span>
+                        </div>
+                        
+                        <div class="ms-auto d-flex align-items-center">
+                            <!-- Bot Controls -->
+                            <div class="btn-group me-3">
+                                <button class="btn btn-success btn-sm btn-custom" id="startBot">
+                                    <i class="fas fa-play me-1"></i>Start
+                                </button>
+                                <button class="btn btn-warning btn-sm btn-custom" id="pauseBot">
+                                    <i class="fas fa-pause me-1"></i>Pause
+                                </button>
+                                <button class="btn btn-danger btn-sm btn-custom" id="stopBot">
+                                    <i class="fas fa-stop me-1"></i>Stop
+                                </button>
+                            </div>
+                            
+                            <!-- Last Update -->
+                            <small class="text-muted">
+                                Last update: <span id="lastUpdate">Never</span>
+                            </small>
+                        </div>
+                    </nav>
+                    
+                    <!-- Page Content -->
+                    <div class="p-4">
+                        {% block content %}{% endblock %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Connection Status Indicator -->
+    <div class="connection-status disconnected" id="connectionStatus">
+        <i class="fas fa-wifi me-1"></i>
+        Disconnected
+    </div>
+    
+    <!-- Notification Container -->
+    <div class="notification-toast" id="notificationContainer"></div>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Base JavaScript -->
+    <script>
+        // Global variables
+        let socket;
+        let botData = {};
+        
+        // Initialize Socket.IO connection
+        function initializeSocket() {
+            socket = io();
+            
+            socket.on('connect', function() {
+                console.log('Connected to server');
+                updateConnectionStatus(true);
+            });
+            
+            socket.on('disconnect', function() {
+                console.log('Disconnected from server');
+                updateConnectionStatus(false);
+            });
+            
+            socket.on('live_update', function(data) {
+                updateBotData(data);
+                updateUI(data);
+            });
+            
+            socket.on('notification', function(data) {
+                showNotification(data.type, data.data);
+            });
+            
+            socket.on('trade_update', function(data) {
+                handleTradeUpdate(data);
+            });
+            
+            socket.on('discovery_update', function(data) {
+                handleDiscoveryUpdate(data);
+            });
+            
+            socket.on('action_result', function(data) {
+                handleActionResult(data);
+            });
+        }
+        
+        // Update connection status
+        function updateConnectionStatus(connected) {
+            const statusEl = document.getElementById('connectionStatus');
+            if (connected) {
+                statusEl.className = 'connection-status connected';
+                statusEl.innerHTML = '<i class="fas fa-wifi me-1"></i>Connected';
+            } else {
+                statusEl.className = 'connection-status disconnected';
+                statusEl.innerHTML = '<i class="fas fa-wifi me-1"></i>Disconnected';
+            }
+        }
+        
+        // Update bot data
+        function updateBotData(data) {
+            botData = data;
+            
+            // Update bot status
+            const statusEl = document.getElementById('botStatus');
+            const statusTextEl = document.getElementById('botStatusText');
+            
+            if (data.bot_status === 'running') {
+                statusEl.className = 'status-indicator status-running';
+                statusTextEl.textContent = 'Bot Running';
+            } else if (data.bot_status === 'paused') {
+                statusEl.className = 'status-indicator status-paused';
+                statusTextEl.textContent = 'Bot Paused';
+            } else {
+                statusEl.className = 'status-indicator status-stopped';
+                statusTextEl.textContent = 'Bot Stopped';
+            }
+            
+            // Update last update time
+            if (data.last_update) {
+                const lastUpdateEl = document.getElementById('lastUpdate');
+                const updateTime = new Date(data.last_update);
+                lastUpdateEl.textContent = updateTime.toLocaleTimeString();
+            }
+        }
+        
+        // Update UI based on data (to be implemented by child pages)
+        function updateUI(data) {
+            // Override in child pages
+        }
+        
+        // Handle trade updates
+        function handleTradeUpdate(data) {
+            showNotification('trade', data);
+        }
+        
+        // Handle discovery updates
+        function handleDiscoveryUpdate(data) {
+            showNotification('discovery', data);
+        }
+        
+        // Handle action results
+        function handleActionResult(data) {
+            if (data.success) {
+                showNotification('success', { message: data.message });
+            } else {
+                showNotification('error', { message: data.error });
+            }
+        }
+        
+        // Show notification
+        function showNotification(type, data) {
+            const container = document.getElementById('notificationContainer');
+            const notification = document.createElement('div');
+            
+            let icon, title, message, className;
+            
+            switch (type) {
+                case 'trade':
+                    icon = 'fas fa-exchange-alt';
+                    title = 'Trade Executed';
+                    message = `${data.type}: ${data.symbol}`;
+                    className = 'alert-info';
+                    break;
+                case 'discovery':
+                    icon = 'fas fa-search';
+                    title = 'Token Discovered';
+                    message = `${data.symbol} found on ${data.source}`;
+                    className = 'alert-success';
+                    break;
+                case 'success':
+                    icon = 'fas fa-check';
+                    title = 'Success';
+                    message = data.message;
+                    className = 'alert-success';
+                    break;
+                case 'error':
+                    icon = 'fas fa-exclamation-triangle';
+                    title = 'Error';
+                    message = data.message;
+                    className = 'alert-danger';
+                    break;
+                default:
+                    icon = 'fas fa-info';
+                    title = 'Info';
+                    message = data.message;
+                    className = 'alert-info';
+            }
+            
+            notification.className = `alert ${className} alert-dismissible fade show`;
+            notification.innerHTML = `
+                <div class="d-flex align-items-center">
+                    <i class="${icon} me-2"></i>
+                    <div>
+                        <strong>${title}</strong><br>
+                        <small>${message}</small>
+                    </div>
+                    <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert"></button>
+                </div>
+            `;
+            
+            container.appendChild(notification);
+            
+            // Auto-remove after 5 seconds
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.remove();
+                }
+            }, 5000);
+        }
+        
+        // Bot control functions
+        function controlBot(action) {
+            const button = document.getElementById(action + 'Bot');
+            const originalText = button.innerHTML;
+            
+            button.disabled = true;
+            button.innerHTML = '<span class="loading-spinner"></span>';
+            
+            fetch(`/api/control/${action}`, { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        showNotification('success', { message: data.message });
+                    } else {
+                        showNotification('error', { message: data.error });
+                    }
+                })
+                .catch(error => {
+                    showNotification('error', { message: 'Request failed: ' + error.message });
+                })
+                .finally(() => {
+                    button.disabled = false;
+                    button.innerHTML = originalText;
+                });
+        }
+        
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeSocket();
+            
+            // Add event listeners for bot controls
+            document.getElementById('startBot').addEventListener('click', () => controlBot('start'));
+            document.getElementById('pauseBot').addEventListener('click', () => controlBot('pause'));
+            document.getElementById('stopBot').addEventListener('click', () => controlBot('stop'));
+        });
+        
+        // Utility functions
+        function formatCurrency(value, decimals = 4) {
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: decimals,
+                maximumFractionDigits: decimals
+            }).format(value);
+        }
+        
+        function formatNumber(value, decimals = 2) {
+            return new Intl.NumberFormat('en-US', {
+                minimumFractionDigits: decimals,
+                maximumFractionDigits: decimals
+            }).format(value);
+        }
+        
+        function formatPercentage(value, decimals = 2) {
+            return new Intl.NumberFormat('en-US', {
+                style: 'percent',
+                minimumFractionDigits: decimals,
+                maximumFractionDigits: decimals
+            }).format(value / 100);
+        }
+        
+        function timeAgo(date) {
+            const now = new Date();
+            const then = new Date(date);
+            const diffInSeconds = Math.floor((now - then) / 1000);
+            
+            if (diffInSeconds < 60) return `${diffInSeconds}s ago`;
+            if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`;
+            if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`;
+            return `${Math.floor(diffInSeconds / 86400)}d ago`;
+        }
+    </script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
