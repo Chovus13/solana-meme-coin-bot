@@ -1,57 +1,59 @@
 # Core dependencies
-requests<=2.32.4
-asyncio<=3.4.3
-aiohttp<=3.12.13
-asyncio-mqtt<=0.16.2
-websockets<=15.0.1
-python-dotenv<=1.1.1
+requests>=2.31.0 # Loosened upper cap, common library
+# asyncio is part of Python standard library, not needed in requirements.txt for Python 3.7+
+aiohttp>=3.9.0 # Loosened upper cap, check compatibility if issues
+asyncio-mqtt>=0.16.1
+websockets>=12.0 # Common recent version
+python-dotenv>=1.0.0
 
 # Social Media APIs
-tweepy<=4.16.0
-praw<=7.8.1
-discord.py<=2.5.2
-telethon<=1.40.0
-TikTokApi<=7.1.0
-python-telegram-bot
+tweepy>=4.12.0 # Loosened upper cap
+praw>=7.7.0 # Loosened upper cap
+discord.py>=2.3.0 # Loosened upper cap
+telethon>=1.30.0 # Loosened upper cap
+TikTokApi>=7.0.0 # Assuming it's this one, ensure it's Py3.12 compatible
+python-telegram-bot>=20.0 # Major version update, check for breaking changes if your code uses it heavily
 
-# Blockchain and Trading
-solana<=0.36.7
-solders<=0.26.0
-anchorpy<=0.21.0
-construct<=2.10.70
+# Blockchain and Trading - Specific set for compatibility
+solana==0.32.0
+solders==0.17.0
+anchorpy==0.21.0
+construct-typing==0.5.1
+construct>=2.10.67 # Usually a dep of construct-typing, pinning can help
 
 # AI and Data Analysis
-# pandas==2.2.3
-# numpy==1.26.4
-pandas<=2.3.0
-numpy<=2.3.1
-scikit-learn<=1.7.0
-tensorflow<=2.19.0
-torch<=2.7.1
-transformers<=4.52.4
+pandas>=2.0.0 # Pandas 2.x is good for modern Python
+numpy>=1.23.0 # Numpy version compatible with modern Pandas and TF/Torch
+scikit-learn>=1.2.0 # scikit-learn version compatible with modern numpy
+# For TensorFlow and PyTorch, it's complex with Py3.12 and CUDA.
+# Assuming CPU-only for now or user will handle GPU builds.
+# These are more like placeholders, specific TF/Torch versions are tricky.
+tensorflow>=2.12.0 # General TF, check for Py3.12 official support
+torch>=2.0.0 # General PyTorch, check for Py3.12 official support
+transformers>=4.30.0 # General recent transformers
 
 # Web Interface
-flask<=3.1.1
-flask-socketio<=5.5.1
-flask-cors<=6.0.1
+flask>=2.3.0 # Loosened upper cap
+flask-socketio>=5.3.0
+flask-cors>=3.0.10 # Check if 4.x is needed/better
 
 # Database
-#sqlite3
+# sqlite3 is part of Python standard library
 
 # Data Processing
-beautifulsoup4<=4.13.4
-selenium<=4.33.0
-lxml<=5.4.0
+beautifulsoup4>=4.11.0
+# selenium>=4.10.0 # Loosened, but be mindful of browser/driver compatibility
+lxml>=4.9.0
 
 # Logging and Monitoring
-loguru<=0.7.3
-prometheus-client<=0.22.1
+loguru>=0.7.0
+prometheus-client>=0.17.0
 
 # Configuration and Security
-cryptography<=45.0.4
-python-jose<=3.5.0
+cryptography>=41.0.0 # Modern cryptography
+python-jose>=3.3.0
 passlib>=1.7.4
 
 # Testing
-pytest<=8.4.1
-pytest-asyncio<=1.0.0
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
