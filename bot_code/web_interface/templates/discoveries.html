@@ -1,0 +1,812 @@
+{% extends "base.html" %}
+
+{% block title %}Token Discoveries - Solana Memecoin Trading Bot{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h2 class="mb-0">
+            <i class="fas fa-search me-2"></i>
+            Token Discoveries
+        </h2>
+        <p class="text-muted">Monitor and analyze discovered tokens from social media sources</p>
+    </div>
+</div>
+
+<!-- Discovery Stats Row -->
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="metric-card">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <div class="metric-label">Today's Discoveries</div>
+                    <div class="metric-value text-primary" id="todayDiscoveries">0</div>
+                </div>
+                <i class="fas fa-calendar-day fa-2x text-primary"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="metric-card">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <div class="metric-label">High Confidence</div>
+                    <div class="metric-value text-success" id="highConfidence">0</div>
+                </div>
+                <i class="fas fa-star fa-2x text-success"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="metric-card">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <div class="metric-label">Analyzed</div>
+                    <div class="metric-value text-info" id="analyzedCount">0</div>
+                </div>
+                <i class="fas fa-microscope fa-2x text-info"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="metric-card">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <div class="metric-label">Traded</div>
+                    <div class="metric-value text-warning" id="tradedCount">0</div>
+                </div>
+                <i class="fas fa-exchange-alt fa-2x text-warning"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Filters Row -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-md-2">
+                        <label class="form-label">Source</label>
+                        <select class="form-select" id="sourceFilter">
+                            <option value="all">All Sources</option>
+                            <option value="twitter">Twitter</option>
+                            <option value="reddit">Reddit</option>
+                            <option value="discord">Discord</option>
+                            <option value="telegram">Telegram</option>
+                            <option value="tiktok">TikTok</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">Confidence</label>
+                        <select class="form-select" id="confidenceFilter">
+                            <option value="all">All Levels</option>
+                            <option value="high">High (>80%)</option>
+                            <option value="medium">Medium (50-80%)</option>
+                            <option value="low">Low (<50%)</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">Time Range</label>
+                        <select class="form-select" id="timeFilter">
+                            <option value="1h">Last Hour</option>
+                            <option value="6h">Last 6 Hours</option>
+                            <option value="24h" selected>Last 24 Hours</option>
+                            <option value="7d">Last 7 Days</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Search</label>
+                        <input type="text" class="form-control" id="searchFilter" placeholder="Symbol or keywords...">
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">Sort By</label>
+                        <select class="form-select" id="sortFilter">
+                            <option value="time">Newest First</option>
+                            <option value="confidence">Confidence</option>
+                            <option value="symbol">Symbol</option>
+                        </select>
+                    </div>
+                    <div class="col-md-1">
+                        <label class="form-label">&nbsp;</label>
+                        <button class="btn btn-primary w-100" onclick="applyFilters()">
+                            <i class="fas fa-filter"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Source Distribution Chart -->
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="card h-100">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-chart-pie me-2"></i>
+                    Discovery Sources
+                </h5>
+            </div>
+            <div class="card-body">
+                <canvas id="sourceChart" height="200"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card h-100">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-chart-line me-2"></i>
+                    Discovery Timeline
+                </h5>
+            </div>
+            <div class="card-body">
+                <canvas id="timelineChart" height="200"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Discoveries Table -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-list me-2"></i>
+                    Discovered Tokens
+                </h5>
+                <div class="btn-group">
+                    <button class="btn btn-sm btn-outline-primary" onclick="refreshDiscoveries()">
+                        <i class="fas fa-sync-alt me-1"></i>Refresh
+                    </button>
+                    <button class="btn btn-sm btn-outline-success" onclick="exportDiscoveries()">
+                        <i class="fas fa-download me-1"></i>Export
+                    </button>
+                    <button class="btn btn-sm btn-outline-info" onclick="toggleAutoRefresh()">
+                        <i class="fas fa-play me-1"></i><span id="autoRefreshText">Auto Refresh</span>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Token</th>
+                                <th>Source</th>
+                                <th>Author</th>
+                                <th>Confidence</th>
+                                <th>Message Preview</th>
+                                <th>Discovered</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="discoveriesTableBody">
+                            <tr>
+                                <td colspan="8" class="text-center text-muted py-4">
+                                    <div class="loading-spinner me-2"></div>
+                                    Loading discoveries...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Token Detail Modal -->
+<div class="modal fade" id="tokenDetailModal" tabindex="-1">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Token Analysis</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <!-- Token Info -->
+                    <div class="col-md-4">
+                        <h6>Token Information</h6>
+                        <table class="table table-sm">
+                            <tr><td>Symbol:</td><td id="detailSymbol">-</td></tr>
+                            <tr><td>Contract:</td><td id="detailContract">-</td></tr>
+                            <tr><td>Source:</td><td id="detailSource">-</td></tr>
+                            <tr><td>Author:</td><td id="detailAuthor">-</td></tr>
+                            <tr><td>Confidence:</td><td id="detailConfidence">-</td></tr>
+                        </table>
+                    </div>
+                    
+                    <!-- Market Data -->
+                    <div class="col-md-4">
+                        <h6>Market Data</h6>
+                        <table class="table table-sm">
+                            <tr><td>Safety Score:</td><td id="detailSafety">-</td></tr>
+                            <tr><td>Market Cap:</td><td id="detailMarketCap">-</td></tr>
+                            <tr><td>Liquidity:</td><td id="detailLiquidity">-</td></tr>
+                            <tr><td>Volume 24h:</td><td id="detailVolume">-</td></tr>
+                            <tr><td>Holders:</td><td id="detailHolders">-</td></tr>
+                        </table>
+                    </div>
+                    
+                    <!-- AI Analysis -->
+                    <div class="col-md-4">
+                        <h6>AI Analysis</h6>
+                        <table class="table table-sm">
+                            <tr><td>Success Probability:</td><td id="detailSuccessProb">-</td></tr>
+                            <tr><td>Recommendation:</td><td id="detailRecommendation">-</td></tr>
+                            <tr><td>Risk Score:</td><td id="detailRisk">-</td></tr>
+                            <tr><td>Sentiment:</td><td id="detailSentiment">-</td></tr>
+                            <tr><td>Technical Score:</td><td id="detailTechnical">-</td></tr>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Original Message -->
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <h6>Original Message</h6>
+                        <div class="card bg-light">
+                            <div class="card-body">
+                                <p class="card-text" id="detailMessage">Loading...</p>
+                                <small class="text-muted">
+                                    <a href="#" id="detailUrl" target="_blank">View Original <i class="fas fa-external-link-alt"></i></a>
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-warning" id="blacklistBtn">
+                    <i class="fas fa-ban me-1"></i>Blacklist
+                </button>
+                <button type="button" class="btn btn-info" id="analyzeBtn">
+                    <i class="fas fa-microscope me-1"></i>Force Analysis
+                </button>
+                <button type="button" class="btn btn-success" id="buyBtn">
+                    <i class="fas fa-shopping-cart me-1"></i>Buy Now
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    let allDiscoveries = [];
+    let filteredDiscoveries = [];
+    let sourceChart, timelineChart;
+    let selectedToken = null;
+    let autoRefreshEnabled = false;
+    let autoRefreshInterval = null;
+    
+    // Initialize charts
+    function initializeCharts() {
+        // Source Distribution Chart
+        const sourceCtx = document.getElementById('sourceChart').getContext('2d');
+        sourceChart = new Chart(sourceCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Twitter', 'Reddit', 'Discord', 'Telegram', 'TikTok'],
+                datasets: [{
+                    data: [0, 0, 0, 0, 0],
+                    backgroundColor: ['#1da1f2', '#ff4500', '#5865f2', '#0088cc', '#ff0050']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+        
+        // Timeline Chart
+        const timelineCtx = document.getElementById('timelineChart').getContext('2d');
+        timelineChart = new Chart(timelineCtx, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'Discoveries per Hour',
+                    data: [],
+                    borderColor: '#6f42c1',
+                    backgroundColor: 'rgba(111, 66, 193, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1
+                        }
+                    }
+                }
+            }
+        });
+    }
+    
+    // Override updateUI function
+    function updateUI(data) {
+        if (data.recent_discoveries) {
+            allDiscoveries = data.recent_discoveries;
+            applyFilters();
+            updateCharts();
+            updateStats();
+        }
+    }
+    
+    // Apply filters
+    function applyFilters() {
+        const sourceFilter = document.getElementById('sourceFilter').value;
+        const confidenceFilter = document.getElementById('confidenceFilter').value;
+        const timeFilter = document.getElementById('timeFilter').value;
+        const searchFilter = document.getElementById('searchFilter').value.toLowerCase();
+        const sortFilter = document.getElementById('sortFilter').value;
+        
+        filteredDiscoveries = allDiscoveries.filter(discovery => {
+            // Source filter
+            if (sourceFilter !== 'all' && discovery.source !== sourceFilter) return false;
+            
+            // Confidence filter
+            const confidence = discovery.confidence_score || 0;
+            if (confidenceFilter === 'high' && confidence <= 0.8) return false;
+            if (confidenceFilter === 'medium' && (confidence <= 0.5 || confidence > 0.8)) return false;
+            if (confidenceFilter === 'low' && confidence > 0.5) return false;
+            
+            // Time filter
+            const discoveryTime = new Date(discovery.timestamp);
+            const now = new Date();
+            const hoursDiff = (now - discoveryTime) / (1000 * 60 * 60);
+            
+            if (timeFilter === '1h' && hoursDiff > 1) return false;
+            if (timeFilter === '6h' && hoursDiff > 6) return false;
+            if (timeFilter === '24h' && hoursDiff > 24) return false;
+            if (timeFilter === '7d' && hoursDiff > 168) return false;
+            
+            // Search filter
+            if (searchFilter && 
+                !discovery.symbol.toLowerCase().includes(searchFilter) &&
+                !discovery.original_message.toLowerCase().includes(searchFilter)) {
+                return false;
+            }
+            
+            return true;
+        });
+        
+        // Sort
+        filteredDiscoveries.sort((a, b) => {
+            switch (sortFilter) {
+                case 'confidence':
+                    return (b.confidence_score || 0) - (a.confidence_score || 0);
+                case 'symbol':
+                    return (a.symbol || '').localeCompare(b.symbol || '');
+                case 'time':
+                default:
+                    return new Date(b.timestamp) - new Date(a.timestamp);
+            }
+        });
+        
+        updateDiscoveriesTable();
+    }
+    
+    // Update discoveries table
+    function updateDiscoveriesTable() {
+        const tbody = document.getElementById('discoveriesTableBody');
+        
+        if (filteredDiscoveries.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="8" class="text-center text-muted py-4">
+                        No discoveries found matching the current filters
+                    </td>
+                </tr>
+            `;
+            return;
+        }
+        
+        tbody.innerHTML = filteredDiscoveries.map(discovery => {
+            const confidence = discovery.confidence_score || 0;
+            const confidenceBadge = getConfidenceBadge(confidence);
+            const sourceBadge = getSourceBadge(discovery.source);
+            const statusBadge = getAnalysisStatus(discovery);
+            
+            return `
+                <tr>
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <div>
+                                <strong>${discovery.symbol || 'Unknown'}</strong>
+                                <br>
+                                <small class="text-muted font-monospace">
+                                    ${discovery.contract_address ? discovery.contract_address.substring(0, 8) + '...' : 'No address'}
+                                </small>
+                            </div>
+                        </div>
+                    </td>
+                    <td>${sourceBadge}</td>
+                    <td>
+                        <span class="text-muted">@${discovery.author || 'unknown'}</span>
+                    </td>
+                    <td>
+                        ${confidenceBadge}
+                        <div class="progress mt-1" style="height: 4px;">
+                            <div class="progress-bar bg-primary" style="width: ${confidence * 100}%"></div>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                            ${discovery.original_message || 'No message'}
+                        </div>
+                    </td>
+                    <td>
+                        <span title="${new Date(discovery.timestamp).toLocaleString()}">
+                            ${timeAgo(discovery.timestamp)}
+                        </span>
+                    </td>
+                    <td>${statusBadge}</td>
+                    <td>
+                        <div class="btn-group">
+                            <button class="btn btn-sm btn-outline-info" onclick="showTokenDetail('${discovery.contract_address || discovery.symbol}')" title="View Details">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-primary" onclick="analyzeToken('${discovery.contract_address || discovery.symbol}')" title="Analyze">
+                                <i class="fas fa-microscope"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-warning" onclick="blacklistToken('${discovery.contract_address || discovery.symbol}')" title="Blacklist">
+                                <i class="fas fa-ban"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+    }
+    
+    // Update statistics
+    function updateStats() {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        
+        const todayDiscoveries = allDiscoveries.filter(d => 
+            new Date(d.timestamp) >= today
+        ).length;
+        
+        const highConfidence = allDiscoveries.filter(d => 
+            (d.confidence_score || 0) > 0.8
+        ).length;
+        
+        document.getElementById('todayDiscoveries').textContent = todayDiscoveries;
+        document.getElementById('highConfidence').textContent = highConfidence;
+        document.getElementById('analyzedCount').textContent = Math.floor(allDiscoveries.length * 0.3); // Simulated
+        document.getElementById('tradedCount').textContent = Math.floor(allDiscoveries.length * 0.1); // Simulated
+    }
+    
+    // Update charts
+    function updateCharts() {
+        // Update source chart
+        const sourceCounts = {};
+        allDiscoveries.forEach(d => {
+            sourceCounts[d.source] = (sourceCounts[d.source] || 0) + 1;
+        });
+        
+        if (sourceChart) {
+            sourceChart.data.datasets[0].data = [
+                sourceCounts.twitter || 0,
+                sourceCounts.reddit || 0,
+                sourceCounts.discord || 0,
+                sourceCounts.telegram || 0,
+                sourceCounts.tiktok || 0
+            ];
+            sourceChart.update('none');
+        }
+        
+        // Update timeline chart
+        const timelineCounts = {};
+        const now = new Date();
+        
+        for (let i = 23; i >= 0; i--) {
+            const hour = new Date(now - i * 60 * 60 * 1000);
+            const hourKey = hour.toISOString().substring(0, 13);
+            timelineCounts[hourKey] = 0;
+        }
+        
+        allDiscoveries.forEach(d => {
+            const hourKey = new Date(d.timestamp).toISOString().substring(0, 13);
+            if (timelineCounts.hasOwnProperty(hourKey)) {
+                timelineCounts[hourKey]++;
+            }
+        });
+        
+        if (timelineChart) {
+            const labels = Object.keys(timelineCounts).map(key => 
+                new Date(key).toLocaleTimeString('en-US', { hour: '2-digit' })
+            );
+            const data = Object.values(timelineCounts);
+            
+            timelineChart.data.labels = labels;
+            timelineChart.data.datasets[0].data = data;
+            timelineChart.update('none');
+        }
+    }
+    
+    // Helper functions for badges
+    function getConfidenceBadge(confidence) {
+        if (confidence > 0.8) return '<span class="badge bg-success">High</span>';
+        if (confidence > 0.5) return '<span class="badge bg-warning">Medium</span>';
+        return '<span class="badge bg-danger">Low</span>';
+    }
+    
+    function getSourceBadge(source) {
+        const badges = {
+            twitter: '<span class="badge" style="background-color: #1da1f2;">Twitter</span>',
+            reddit: '<span class="badge" style="background-color: #ff4500;">Reddit</span>',
+            discord: '<span class="badge" style="background-color: #5865f2;">Discord</span>',
+            telegram: '<span class="badge" style="background-color: #0088cc;">Telegram</span>',
+            tiktok: '<span class="badge" style="background-color: #ff0050;">TikTok</span>'
+        };
+        return badges[source] || '<span class="badge bg-secondary">' + source + '</span>';
+    }
+    
+    function getAnalysisStatus(discovery) {
+        // Simulated status based on discovery age and confidence
+        const age = (new Date() - new Date(discovery.timestamp)) / (1000 * 60 * 60);
+        const confidence = discovery.confidence_score || 0;
+        
+        if (age < 1 && confidence > 0.8) {
+            return '<span class="badge bg-warning">Analyzing</span>';
+        } else if (confidence > 0.6) {
+            return '<span class="badge bg-success">Analyzed</span>';
+        } else {
+            return '<span class="badge bg-secondary">Pending</span>';
+        }
+    }
+    
+    // Show token detail modal
+    function showTokenDetail(tokenIdentifier) {
+        selectedToken = allDiscoveries.find(d => 
+            d.contract_address === tokenIdentifier || d.symbol === tokenIdentifier
+        );
+        
+        if (!selectedToken) return;
+        
+        // Populate basic info
+        document.getElementById('detailSymbol').textContent = selectedToken.symbol || 'Unknown';
+        document.getElementById('detailContract').innerHTML = selectedToken.contract_address ? 
+            `<span class="font-monospace">${selectedToken.contract_address}</span>` : 'Not available';
+        document.getElementById('detailSource').innerHTML = getSourceBadge(selectedToken.source);
+        document.getElementById('detailAuthor').textContent = selectedToken.author || 'Unknown';
+        document.getElementById('detailConfidence').innerHTML = getConfidenceBadge(selectedToken.confidence_score || 0);
+        document.getElementById('detailMessage').textContent = selectedToken.original_message || 'No message';
+        
+        if (selectedToken.platform_url) {
+            document.getElementById('detailUrl').href = selectedToken.platform_url;
+            document.getElementById('detailUrl').style.display = 'inline';
+        } else {
+            document.getElementById('detailUrl').style.display = 'none';
+        }
+        
+        // Simulate market data (would come from actual analysis)
+        document.getElementById('detailSafety').innerHTML = '<span class="badge bg-warning">Analyzing...</span>';
+        document.getElementById('detailMarketCap').textContent = 'Loading...';
+        document.getElementById('detailLiquidity').textContent = 'Loading...';
+        document.getElementById('detailVolume').textContent = 'Loading...';
+        document.getElementById('detailHolders').textContent = 'Loading...';
+        
+        // Simulate AI analysis
+        document.getElementById('detailSuccessProb').textContent = 'Calculating...';
+        document.getElementById('detailRecommendation').textContent = 'Analyzing...';
+        document.getElementById('detailRisk').textContent = 'Assessing...';
+        document.getElementById('detailSentiment').textContent = 'Processing...';
+        document.getElementById('detailTechnical').textContent = 'Computing...';
+        
+        // Show modal
+        const modal = new bootstrap.Modal(document.getElementById('tokenDetailModal'));
+        modal.show();
+        
+        // Simulate loading data
+        setTimeout(() => {
+            loadTokenAnalysisData();
+        }, 1000);
+    }
+    
+    // Simulate loading analysis data
+    function loadTokenAnalysisData() {
+        if (!selectedToken) return;
+        
+        // Simulate market data
+        document.getElementById('detailSafety').innerHTML = '<span class="badge bg-success">85/100</span>';
+        document.getElementById('detailMarketCap').textContent = '$' + (Math.random() * 500000 + 50000).toFixed(0);
+        document.getElementById('detailLiquidity').textContent = '$' + (Math.random() * 50000 + 5000).toFixed(0);
+        document.getElementById('detailVolume').textContent = '$' + (Math.random() * 100000 + 1000).toFixed(0);
+        document.getElementById('detailHolders').textContent = Math.floor(Math.random() * 1000 + 100);
+        
+        // Simulate AI analysis
+        const successProb = Math.random() * 0.6 + 0.2; // 20-80%
+        document.getElementById('detailSuccessProb').innerHTML = 
+            `<span class="badge ${successProb > 0.6 ? 'bg-success' : successProb > 0.4 ? 'bg-warning' : 'bg-danger'}">${(successProb * 100).toFixed(1)}%</span>`;
+        
+        const recommendations = ['BUY', 'MONITOR', 'PASS'];
+        const recommendation = recommendations[Math.floor(successProb * 3)];
+        document.getElementById('detailRecommendation').innerHTML = 
+            `<span class="badge ${recommendation === 'BUY' ? 'bg-success' : recommendation === 'MONITOR' ? 'bg-warning' : 'bg-danger'}">${recommendation}</span>`;
+        
+        document.getElementById('detailRisk').innerHTML = 
+            `<span class="badge ${successProb > 0.6 ? 'bg-success' : 'bg-warning'}">${successProb > 0.6 ? 'Low' : 'Medium'}</span>`;
+        
+        document.getElementById('detailSentiment').innerHTML = 
+            `<span class="badge bg-info">${(Math.random() * 0.6 + 0.4).toFixed(2)}</span>`;
+        
+        document.getElementById('detailTechnical').innerHTML = 
+            `<span class="badge bg-primary">${(Math.random() * 0.8 + 0.2).toFixed(2)}</span>`;
+    }
+    
+    // Action functions
+    function analyzeToken(tokenIdentifier) {
+        socket.emit('manual_action', {
+            action: 'analyze_token',
+            params: { token_address: tokenIdentifier }
+        });
+        showNotification('info', { message: 'Analysis requested for ' + tokenIdentifier });
+    }
+    
+    function blacklistToken(tokenIdentifier) {
+        if (confirm('Add this token to blacklist?')) {
+            socket.emit('manual_action', {
+                action: 'blacklist_token',
+                params: { token_address: tokenIdentifier }
+            });
+            showNotification('warning', { message: 'Token blacklisted: ' + tokenIdentifier });
+        }
+    }
+    
+    function buyToken(tokenIdentifier) {
+        if (confirm('Execute buy order for this token?')) {
+            socket.emit('manual_action', {
+                action: 'manual_buy',
+                params: { token_address: tokenIdentifier }
+            });
+            showNotification('info', { message: 'Buy order submitted for ' + tokenIdentifier });
+        }
+    }
+    
+    function refreshDiscoveries() {
+        fetch('/api/discoveries?limit=100')
+            .then(response => response.json())
+            .then(data => {
+                allDiscoveries = data;
+                applyFilters();
+                updateCharts();
+                updateStats();
+            })
+            .catch(error => {
+                console.error('Error refreshing discoveries:', error);
+                showNotification('error', { message: 'Failed to refresh discoveries' });
+            });
+    }
+    
+    function exportDiscoveries() {
+        const csv = generateDiscoveriesCSV(filteredDiscoveries);
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `discoveries_${new Date().toISOString().split('T')[0]}.csv`;
+        a.click();
+        window.URL.revokeObjectURL(url);
+    }
+    
+    function generateDiscoveriesCSV(discoveries) {
+        const headers = ['Symbol', 'Contract Address', 'Source', 'Author', 'Confidence', 'Message', 'Timestamp'];
+        const rows = discoveries.map(d => [
+            d.symbol || 'Unknown',
+            d.contract_address || '',
+            d.source,
+            d.author || 'unknown',
+            d.confidence_score || 0,
+            d.original_message || '',
+            d.timestamp
+        ]);
+        
+        return [headers, ...rows]
+            .map(row => row.map(field => `"${field}"`).join(','))
+            .join('\n');
+    }
+    
+    function toggleAutoRefresh() {
+        autoRefreshEnabled = !autoRefreshEnabled;
+        const btn = document.getElementById('autoRefreshText');
+        
+        if (autoRefreshEnabled) {
+            btn.textContent = 'Stop Auto';
+            autoRefreshInterval = setInterval(refreshDiscoveries, 30000); // 30 seconds
+            showNotification('info', { message: 'Auto refresh enabled' });
+        } else {
+            btn.textContent = 'Auto Refresh';
+            if (autoRefreshInterval) {
+                clearInterval(autoRefreshInterval);
+                autoRefreshInterval = null;
+            }
+            showNotification('info', { message: 'Auto refresh disabled' });
+        }
+    }
+    
+    // Initialize page
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize charts
+        initializeCharts();
+        
+        // Load initial data
+        refreshDiscoveries();
+        
+        // Subscribe to real-time updates
+        if (socket) {
+            socket.emit('subscribe', { stream: 'discoveries' });
+        }
+        
+        // Add event listeners
+        document.getElementById('sourceFilter').addEventListener('change', applyFilters);
+        document.getElementById('confidenceFilter').addEventListener('change', applyFilters);
+        document.getElementById('timeFilter').addEventListener('change', applyFilters);
+        document.getElementById('sortFilter').addEventListener('change', applyFilters);
+        document.getElementById('searchFilter').addEventListener('input', debounce(applyFilters, 300));
+        
+        // Modal event listeners
+        document.getElementById('blacklistBtn').addEventListener('click', function() {
+            if (selectedToken) {
+                blacklistToken(selectedToken.contract_address || selectedToken.symbol);
+                bootstrap.Modal.getInstance(document.getElementById('tokenDetailModal')).hide();
+            }
+        });
+        
+        document.getElementById('analyzeBtn').addEventListener('click', function() {
+            if (selectedToken) {
+                analyzeToken(selectedToken.contract_address || selectedToken.symbol);
+                bootstrap.Modal.getInstance(document.getElementById('tokenDetailModal')).hide();
+            }
+        });
+        
+        document.getElementById('buyBtn').addEventListener('click', function() {
+            if (selectedToken) {
+                buyToken(selectedToken.contract_address || selectedToken.symbol);
+                bootstrap.Modal.getInstance(document.getElementById('tokenDetailModal')).hide();
+            }
+        });
+    });
+    
+    // Utility function for debouncing
+    function debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,646 @@
+{% extends "base.html" %}
+
+{% block title %}Positions - Solana Memecoin Trading Bot{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h2 class="mb-0">
+            <i class="fas fa-chart-line me-2"></i>
+            Trading Positions
+        </h2>
+        <p class="text-muted">Manage and monitor your trading positions</p>
+    </div>
+</div>
+
+<!-- Filters and Controls -->
+<div class="row mb-4">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-md-3">
+                        <label class="form-label">Status Filter</label>
+                        <select class="form-select" id="statusFilter">
+                            <option value="all">All Positions</option>
+                            <option value="open" selected>Open Only</option>
+                            <option value="closed">Closed Only</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Time Range</label>
+                        <select class="form-select" id="timeFilter">
+                            <option value="1d">Last 24 Hours</option>
+                            <option value="7d" selected>Last 7 Days</option>
+                            <option value="30d">Last 30 Days</option>
+                            <option value="all">All Time</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Search</label>
+                        <input type="text" class="form-control" id="searchFilter" placeholder="Symbol or contract address...">
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">&nbsp;</label>
+                        <button class="btn btn-primary w-100" onclick="applyFilters()">
+                            <i class="fas fa-filter me-1"></i>Filter
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body text-center">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="metric-value text-success" id="totalProfit">+0.0000</div>
+                        <div class="metric-label">Total Profit</div>
+                    </div>
+                    <div class="col-6">
+                        <div class="metric-value text-danger" id="totalLoss">-0.0000</div>
+                        <div class="metric-label">Total Loss</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Position Summary Cards -->
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="metric-card">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <div class="metric-label">Open Positions</div>
+                    <div class="metric-value" id="openPositionsCount">0</div>
+                </div>
+                <i class="fas fa-chart-line fa-2x text-success"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="metric-card">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <div class="metric-label">Total Invested</div>
+                    <div class="metric-value" id="totalInvested">0.0000</div>
+                </div>
+                <i class="fas fa-coins fa-2x text-primary"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="metric-card">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <div class="metric-label">Current Value</div>
+                    <div class="metric-value" id="currentValue">0.0000</div>
+                </div>
+                <i class="fas fa-wallet fa-2x text-info"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="metric-card">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <div class="metric-label">Unrealized P&L</div>
+                    <div class="metric-value" id="unrealizedPnl">+0.00%</div>
+                </div>
+                <i class="fas fa-percentage fa-2x text-warning"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Positions Table -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-list me-2"></i>
+                    Position Details
+                </h5>
+                <div class="btn-group">
+                    <button class="btn btn-sm btn-outline-primary" onclick="refreshPositions()">
+                        <i class="fas fa-sync-alt me-1"></i>Refresh
+                    </button>
+                    <button class="btn btn-sm btn-outline-success" onclick="exportPositions()">
+                        <i class="fas fa-download me-1"></i>Export
+                    </button>
+                    <button class="btn btn-sm btn-outline-danger" onclick="showCloseAllModal()">
+                        <i class="fas fa-times me-1"></i>Close All
+                    </button>
+                </div>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Token</th>
+                                <th>Entry</th>
+                                <th>Current</th>
+                                <th>Amount</th>
+                                <th>P&L</th>
+                                <th>Age</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="positionsTableBody">
+                            <tr>
+                                <td colspan="8" class="text-center text-muted py-4">
+                                    <div class="loading-spinner me-2"></div>
+                                    Loading positions...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Position Detail Modal -->
+<div class="modal fade" id="positionDetailModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Position Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6>Token Information</h6>
+                        <table class="table table-sm">
+                            <tr><td>Symbol:</td><td id="modalSymbol">-</td></tr>
+                            <tr><td>Contract:</td><td id="modalContract">-</td></tr>
+                            <tr><td>Status:</td><td id="modalStatus">-</td></tr>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>Trading Information</h6>
+                        <table class="table table-sm">
+                            <tr><td>Entry Price:</td><td id="modalEntryPrice">-</td></tr>
+                            <tr><td>Current Price:</td><td id="modalCurrentPrice">-</td></tr>
+                            <tr><td>Amount:</td><td id="modalAmount">-</td></tr>
+                            <tr><td>P&L:</td><td id="modalPnl">-</td></tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <h6>Price Chart</h6>
+                        <canvas id="positionPriceChart" height="200"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-warning" id="partialCloseBtn">Partial Close</button>
+                <button type="button" class="btn btn-danger" id="fullCloseBtn">Close Position</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Close All Positions Modal -->
+<div class="modal fade" id="closeAllModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Close All Positions</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    <strong>Warning:</strong> This will close ALL open positions immediately. This action cannot be undone.
+                </div>
+                <p>Are you sure you want to close all <span id="openPositionsCountModal">0</span> open positions?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirmCloseAll">
+                    <i class="fas fa-times me-1"></i>Close All Positions
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    let allPositions = [];
+    let filteredPositions = [];
+    let positionPriceChart;
+    let selectedPosition = null;
+    
+    // Override updateUI function
+    function updateUI(data) {
+        if (data.positions) {
+            allPositions = data.positions;
+            applyFilters();
+        }
+        updateSummaryCards();
+    }
+    
+    // Apply filters to positions
+    function applyFilters() {
+        const statusFilter = document.getElementById('statusFilter').value;
+        const timeFilter = document.getElementById('timeFilter').value;
+        const searchFilter = document.getElementById('searchFilter').value.toLowerCase();
+        
+        filteredPositions = allPositions.filter(position => {
+            // Status filter
+            if (statusFilter === 'open' && position.status !== 'OPEN') return false;
+            if (statusFilter === 'closed' && position.status !== 'CLOSED') return false;
+            
+            // Time filter
+            const positionDate = new Date(position.entry_timestamp);
+            const now = new Date();
+            const diffDays = (now - positionDate) / (1000 * 60 * 60 * 24);
+            
+            if (timeFilter === '1d' && diffDays > 1) return false;
+            if (timeFilter === '7d' && diffDays > 7) return false;
+            if (timeFilter === '30d' && diffDays > 30) return false;
+            
+            // Search filter
+            if (searchFilter && 
+                !position.symbol.toLowerCase().includes(searchFilter) &&
+                !position.token_address.toLowerCase().includes(searchFilter)) {
+                return false;
+            }
+            
+            return true;
+        });
+        
+        updatePositionsTable();
+        updateSummaryCards();
+    }
+    
+    // Update positions table
+    function updatePositionsTable() {
+        const tbody = document.getElementById('positionsTableBody');
+        
+        if (filteredPositions.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="8" class="text-center text-muted py-4">
+                        No positions found matching the current filters
+                    </td>
+                </tr>
+            `;
+            return;
+        }
+        
+        tbody.innerHTML = filteredPositions.map(position => {
+            const pnl = position.pnl_percent || 0;
+            const pnlClass = pnl >= 0 ? 'text-success' : 'text-danger';
+            const pnlIcon = pnl >= 0 ? 'fas fa-arrow-up' : 'fas fa-arrow-down';
+            
+            const statusBadge = getStatusBadge(position.status);
+            
+            return `
+                <tr>
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <div>
+                                <strong>${position.symbol || 'Unknown'}</strong>
+                                <br>
+                                <small class="text-muted font-monospace">
+                                    ${position.token_address.substring(0, 8)}...${position.token_address.slice(-4)}
+                                </small>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <span class="font-monospace">${formatCurrency(position.entry_price || 0, 8)}</span>
+                    </td>
+                    <td>
+                        <span class="font-monospace">${formatCurrency(position.current_price || 0, 8)}</span>
+                        <br>
+                        <small class="${pnlClass}">
+                            ${pnl >= 0 ? '+' : ''}${formatPercentage(Math.abs(pnl), 2)}
+                        </small>
+                    </td>
+                    <td>
+                        <strong>${formatNumber(position.amount_sol || 0, 4)} SOL</strong>
+                        <br>
+                        <small class="text-muted">${formatNumber(position.tokens_held || 0, 0)} tokens</small>
+                    </td>
+                    <td class="${pnlClass}">
+                        <i class="${pnlIcon} me-1"></i>
+                        <strong>${formatPercentage(pnl, 2)}</strong>
+                        <br>
+                        <small>${(pnl * position.amount_sol / 100).toFixed(4)} SOL</small>
+                    </td>
+                    <td>${timeAgo(position.entry_timestamp)}</td>
+                    <td>${statusBadge}</td>
+                    <td>
+                        <div class="btn-group">
+                            <button class="btn btn-sm btn-outline-info" onclick="showPositionDetail('${position.token_address}')" title="View Details">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            ${position.status === 'OPEN' ? `
+                                <button class="btn btn-sm btn-outline-warning" onclick="partialClose('${position.token_address}')" title="Partial Close">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <button class="btn btn-sm btn-outline-danger" onclick="fullClose('${position.token_address}')" title="Close Position">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            ` : ''}
+                        </div>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+    }
+    
+    // Update summary cards
+    function updateSummaryCards() {
+        const openPositions = filteredPositions.filter(p => p.status === 'OPEN');
+        const closedPositions = filteredPositions.filter(p => p.status === 'CLOSED');
+        
+        // Open positions count
+        document.getElementById('openPositionsCount').textContent = openPositions.length;
+        document.getElementById('openPositionsCountModal').textContent = openPositions.length;
+        
+        // Total invested
+        const totalInvested = openPositions.reduce((sum, p) => sum + (p.amount_sol || 0), 0);
+        document.getElementById('totalInvested').textContent = formatNumber(totalInvested, 4);
+        
+        // Current value (estimated)
+        const currentValue = openPositions.reduce((sum, p) => {
+            const currentPrice = p.current_price || 0;
+            const entryPrice = p.entry_price || 0;
+            const amount = p.amount_sol || 0;
+            return sum + (entryPrice > 0 ? amount * (currentPrice / entryPrice) : amount);
+        }, 0);
+        document.getElementById('currentValue').textContent = formatNumber(currentValue, 4);
+        
+        // Unrealized P&L
+        const unrealizedPnl = totalInvested > 0 ? ((currentValue - totalInvested) / totalInvested) * 100 : 0;
+        const unrealizedEl = document.getElementById('unrealizedPnl');
+        unrealizedEl.textContent = (unrealizedPnl >= 0 ? '+' : '') + formatPercentage(unrealizedPnl, 2);
+        unrealizedEl.className = `metric-value ${unrealizedPnl >= 0 ? 'text-success' : 'text-danger'}`;
+        
+        // Total profit/loss from closed positions
+        const totalProfit = closedPositions
+            .filter(p => (p.pnl_percent || 0) > 0)
+            .reduce((sum, p) => sum + (p.pnl_percent * p.amount_sol / 100), 0);
+        
+        const totalLoss = closedPositions
+            .filter(p => (p.pnl_percent || 0) < 0)
+            .reduce((sum, p) => sum + (p.pnl_percent * p.amount_sol / 100), 0);
+        
+        document.getElementById('totalProfit').textContent = '+' + formatNumber(totalProfit, 4);
+        document.getElementById('totalLoss').textContent = formatNumber(totalLoss, 4);
+    }
+    
+    // Get status badge HTML
+    function getStatusBadge(status) {
+        const badges = {
+            'OPEN': '<span class="badge bg-success">Open</span>',
+            'CLOSED': '<span class="badge bg-secondary">Closed</span>',
+            'PARTIAL_CLOSE': '<span class="badge bg-warning">Partial</span>'
+        };
+        return badges[status] || '<span class="badge bg-light text-dark">Unknown</span>';
+    }
+    
+    // Show position detail modal
+    function showPositionDetail(tokenAddress) {
+        selectedPosition = allPositions.find(p => p.token_address === tokenAddress);
+        if (!selectedPosition) return;
+        
+        // Populate modal
+        document.getElementById('modalSymbol').textContent = selectedPosition.symbol || 'Unknown';
+        document.getElementById('modalContract').innerHTML = `
+            <span class="font-monospace">${selectedPosition.token_address}</span>
+            <button class="btn btn-sm btn-outline-secondary ms-2" onclick="copyToClipboard('${selectedPosition.token_address}')">
+                <i class="fas fa-copy"></i>
+            </button>
+        `;
+        document.getElementById('modalStatus').innerHTML = getStatusBadge(selectedPosition.status);
+        document.getElementById('modalEntryPrice').textContent = formatCurrency(selectedPosition.entry_price || 0, 8);
+        document.getElementById('modalCurrentPrice').textContent = formatCurrency(selectedPosition.current_price || 0, 8);
+        document.getElementById('modalAmount').textContent = formatNumber(selectedPosition.amount_sol || 0, 4) + ' SOL';
+        
+        const pnl = selectedPosition.pnl_percent || 0;
+        const pnlEl = document.getElementById('modalPnl');
+        pnlEl.textContent = formatPercentage(pnl, 2);
+        pnlEl.className = pnl >= 0 ? 'text-success' : 'text-danger';
+        
+        // Show/hide action buttons based on status
+        const partialBtn = document.getElementById('partialCloseBtn');
+        const fullBtn = document.getElementById('fullCloseBtn');
+        
+        if (selectedPosition.status === 'OPEN') {
+            partialBtn.style.display = 'inline-block';
+            fullBtn.style.display = 'inline-block';
+        } else {
+            partialBtn.style.display = 'none';
+            fullBtn.style.display = 'none';
+        }
+        
+        // Initialize price chart
+        initializePositionChart();
+        
+        // Show modal
+        const modal = new bootstrap.Modal(document.getElementById('positionDetailModal'));
+        modal.show();
+    }
+    
+    // Initialize position price chart
+    function initializePositionChart() {
+        const ctx = document.getElementById('positionPriceChart').getContext('2d');
+        
+        if (positionPriceChart) {
+            positionPriceChart.destroy();
+        }
+        
+        // Generate sample price data
+        const labels = [];
+        const prices = [];
+        const entryPrice = selectedPosition.entry_price || 0;
+        
+        for (let i = 0; i < 24; i++) {
+            labels.push(`${i}h`);
+            // Generate realistic price movement
+            const variation = (Math.random() - 0.5) * 0.1; // ±5% variation
+            prices.push(entryPrice * (1 + variation * i * 0.1));
+        }
+        
+        positionPriceChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Price',
+                    data: prices,
+                    borderColor: '#6f42c1',
+                    backgroundColor: 'rgba(111, 66, 193, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }, {
+                    label: 'Entry Price',
+                    data: Array(24).fill(entryPrice),
+                    borderColor: '#dc3545',
+                    borderDash: [5, 5],
+                    pointRadius: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        ticks: {
+                            callback: function(value) {
+                                return formatCurrency(value, 8);
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+    
+    // Action functions
+    function partialClose(tokenAddress) {
+        if (confirm('Close 50% of this position?')) {
+            socket.emit('manual_action', {
+                action: 'partial_close_position',
+                params: { 
+                    token_address: tokenAddress,
+                    percentage: 0.5
+                }
+            });
+        }
+    }
+    
+    function fullClose(tokenAddress) {
+        if (confirm('Close this entire position?')) {
+            socket.emit('manual_action', {
+                action: 'force_sell_position',
+                params: { token_address: tokenAddress }
+            });
+        }
+    }
+    
+    function showCloseAllModal() {
+        const modal = new bootstrap.Modal(document.getElementById('closeAllModal'));
+        modal.show();
+    }
+    
+    function refreshPositions() {
+        fetch('/api/positions')
+            .then(response => response.json())
+            .then(data => {
+                allPositions = data;
+                applyFilters();
+            })
+            .catch(error => {
+                console.error('Error refreshing positions:', error);
+                showNotification('error', { message: 'Failed to refresh positions' });
+            });
+    }
+    
+    function exportPositions() {
+        // Generate CSV export
+        const csv = generateCSV(filteredPositions);
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `positions_${new Date().toISOString().split('T')[0]}.csv`;
+        a.click();
+        window.URL.revokeObjectURL(url);
+    }
+    
+    function generateCSV(positions) {
+        const headers = ['Symbol', 'Contract Address', 'Entry Price', 'Current Price', 'Amount (SOL)', 'P&L %', 'Status', 'Entry Time'];
+        const rows = positions.map(p => [
+            p.symbol || 'Unknown',
+            p.token_address,
+            p.entry_price || 0,
+            p.current_price || 0,
+            p.amount_sol || 0,
+            p.pnl_percent || 0,
+            p.status,
+            p.entry_timestamp
+        ]);
+        
+        return [headers, ...rows]
+            .map(row => row.map(field => `"${field}"`).join(','))
+            .join('\n');
+    }
+    
+    function copyToClipboard(text) {
+        navigator.clipboard.writeText(text).then(() => {
+            showNotification('success', { message: 'Copied to clipboard' });
+        });
+    }
+    
+    // Initialize page
+    document.addEventListener('DOMContentLoaded', function() {
+        // Load initial data
+        refreshPositions();
+        
+        // Add event listeners
+        document.getElementById('statusFilter').addEventListener('change', applyFilters);
+        document.getElementById('timeFilter').addEventListener('change', applyFilters);
+        document.getElementById('searchFilter').addEventListener('input', debounce(applyFilters, 300));
+        
+        // Modal event listeners
+        document.getElementById('partialCloseBtn').addEventListener('click', function() {
+            if (selectedPosition) {
+                partialClose(selectedPosition.token_address);
+                bootstrap.Modal.getInstance(document.getElementById('positionDetailModal')).hide();
+            }
+        });
+        
+        document.getElementById('fullCloseBtn').addEventListener('click', function() {
+            if (selectedPosition) {
+                fullClose(selectedPosition.token_address);
+                bootstrap.Modal.getInstance(document.getElementById('positionDetailModal')).hide();
+            }
+        });
+        
+        document.getElementById('confirmCloseAll').addEventListener('click', function() {
+            socket.emit('manual_action', {
+                action: 'close_all_positions',
+                params: {}
+            });
+            bootstrap.Modal.getInstance(document.getElementById('closeAllModal')).hide();
+        });
+    });
+    
+    // Utility function for debouncing
+    function debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    }
+</script>
+{% endblock %}

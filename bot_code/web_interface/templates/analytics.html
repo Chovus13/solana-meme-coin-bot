@@ -1,0 +1,322 @@
+{% extends "base.html" %}
+
+{% block title %}Analytics - Solana Memecoin Bot{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="mb-4">📊 Analytics & Performance</h2>
+        </div>
+    </div>
+
+    <!-- Performance Summary Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h6 class="card-title">Total P&L</h6>
+                            <h4 id="total-pnl">+0.00 SOL</h4>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="fas fa-chart-line fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h6 class="card-title">Win Rate</h6>
+                            <h4 id="win-rate">0%</h4>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="fas fa-trophy fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-info text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h6 class="card-title">Avg Hold Time</h6>
+                            <h4 id="avg-hold-time">0h 0m</h4>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="fas fa-clock fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-warning text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h6 class="card-title">Best Trade</h6>
+                            <h4 id="best-trade">+0%</h4>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="fas fa-star fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts Row -->
+    <div class="row mb-4">
+        <!-- P&L Chart -->
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">📈 P&L Over Time</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="pnlChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Discovery Sources -->
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">🔍 Discovery Sources</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="sourcesChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Trading History Table -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">📋 Recent Trading History</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped" id="trading-history">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Token</th>
+                                    <th>Action</th>
+                                    <th>Amount</th>
+                                    <th>Price</th>
+                                    <th>P&L</th>
+                                    <th>Source</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="7" class="text-center text-muted">
+                                        <em>No trading history yet. Start the bot to see your trades here!</em>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Token Performance -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">🏆 Top Performing Tokens</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped" id="top-tokens">
+                            <thead>
+                                <tr>
+                                    <th>Rank</th>
+                                    <th>Token</th>
+                                    <th>Entry Price</th>
+                                    <th>Exit Price</th>
+                                    <th>Return</th>
+                                    <th>Hold Time</th>
+                                    <th>Discovery Source</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="7" class="text-center text-muted">
+                                        <em>No completed trades yet. Your profitable trades will appear here!</em>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Initialize charts when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    initializeAnalyticsCharts();
+    loadAnalyticsData();
+    
+    // Update analytics every 30 seconds
+    setInterval(loadAnalyticsData, 30000);
+});
+
+function initializeAnalyticsCharts() {
+    // P&L Chart
+    const pnlCtx = document.getElementById('pnlChart').getContext('2d');
+    window.pnlChart = new Chart(pnlCtx, {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [{
+                label: 'P&L (SOL)',
+                data: [],
+                borderColor: 'rgb(75, 192, 192)',
+                backgroundColor: 'rgba(75, 192, 192, 0.1)',
+                tension: 0.1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+    
+    // Discovery Sources Pie Chart
+    const sourcesCtx = document.getElementById('sourcesChart').getContext('2d');
+    window.sourcesChart = new Chart(sourcesCtx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Twitter', 'Reddit', 'Discord', 'Telegram', 'TikTok'],
+            datasets: [{
+                data: [0, 0, 0, 0, 0],
+                backgroundColor: [
+                    '#1DA1F2',
+                    '#FF4500',
+                    '#5865F2',
+                    '#0088CC',
+                    '#000000'
+                ]
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }
+    });
+}
+
+function loadAnalyticsData() {
+    fetch('/api/analytics')
+        .then(response => response.json())
+        .then(data => {
+            // Update summary cards
+            document.getElementById('total-pnl').textContent = 
+                (data.total_pnl > 0 ? '+' : '') + data.total_pnl.toFixed(2) + ' SOL';
+            document.getElementById('win-rate').textContent = 
+                data.win_rate.toFixed(1) + '%';
+            document.getElementById('avg-hold-time').textContent = 
+                data.avg_hold_time;
+            document.getElementById('best-trade').textContent = 
+                '+' + data.best_trade.toFixed(1) + '%';
+                
+            // Update charts
+            updatePnLChart(data.pnl_history);
+            updateSourcesChart(data.discovery_sources);
+            
+            // Update tables
+            updateTradingHistory(data.recent_trades);
+            updateTopTokens(data.top_tokens);
+        })
+        .catch(error => {
+            console.error('Error loading analytics data:', error);
+        });
+}
+
+function updatePnLChart(pnlHistory) {
+    if (window.pnlChart && pnlHistory) {
+        window.pnlChart.data.labels = pnlHistory.map(item => item.time);
+        window.pnlChart.data.datasets[0].data = pnlHistory.map(item => item.pnl);
+        window.pnlChart.update();
+    }
+}
+
+function updateSourcesChart(sources) {
+    if (window.sourcesChart && sources) {
+        window.sourcesChart.data.datasets[0].data = [
+            sources.twitter || 0,
+            sources.reddit || 0,
+            sources.discord || 0,
+            sources.telegram || 0,
+            sources.tiktok || 0
+        ];
+        window.sourcesChart.update();
+    }
+}
+
+function updateTradingHistory(trades) {
+    const tbody = document.querySelector('#trading-history tbody');
+    if (trades && trades.length > 0) {
+        tbody.innerHTML = trades.map(trade => `
+            <tr>
+                <td>${new Date(trade.date).toLocaleString()}</td>
+                <td>${trade.token}</td>
+                <td><span class="badge bg-${trade.action === 'BUY' ? 'success' : 'danger'}">${trade.action}</span></td>
+                <td>${trade.amount} SOL</td>
+                <td>$${trade.price.toFixed(6)}</td>
+                <td class="${trade.pnl >= 0 ? 'text-success' : 'text-danger'}">
+                    ${trade.pnl >= 0 ? '+' : ''}${trade.pnl.toFixed(2)} SOL
+                </td>
+                <td>${trade.source}</td>
+            </tr>
+        `).join('');
+    }
+}
+
+function updateTopTokens(tokens) {
+    const tbody = document.querySelector('#top-tokens tbody');
+    if (tokens && tokens.length > 0) {
+        tbody.innerHTML = tokens.map((token, index) => `
+            <tr>
+                <td>${index + 1}</td>
+                <td>${token.symbol}</td>
+                <td>$${token.entry_price.toFixed(6)}</td>
+                <td>$${token.exit_price.toFixed(6)}</td>
+                <td class="text-success">+${token.return.toFixed(1)}%</td>
+                <td>${token.hold_time}</td>
+                <td>${token.source}</td>
+            </tr>
+        `).join('');
+    }
+}
+</script>
+{% endblock %}

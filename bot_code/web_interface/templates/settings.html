@@ -1,0 +1,969 @@
+{% extends "base.html" %}
+
+{% block title %}Settings - Solana Memecoin Trading Bot{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h2 class="mb-0">
+            <i class="fas fa-cog me-2"></i>
+            Bot Settings
+        </h2>
+        <p class="text-muted">Configure trading parameters, filters, and monitoring settings</p>
+    </div>
+</div>
+
+
+<div class="row mb-4">
+    <div class="col-12">
+        <ul class="nav nav-tabs" id="settingsTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="trading-tab" data-bs-toggle="tab" data-bs-target="#trading" type="button" role="tab">
+                    <i class="fas fa-chart-line me-2"></i>Trading
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="filters-tab" data-bs-toggle="tab" data-bs-target="#filters" type="button" role="tab">
+                    <i class="fas fa-filter me-2"></i>Filters
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="monitoring-tab" data-bs-toggle="tab" data-bs-target="#monitoring" type="button" role="tab">
+                    <i class="fas fa-eye me-2"></i>Monitoring
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="notifications-tab" data-bs-toggle="tab" data-bs-target="#notifications" type="button" role="tab">
+                    <i class="fas fa-bell me-2"></i>Notifications
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="security-tab" data-bs-toggle="tab" data-bs-target="#security" type="button" role="tab">
+                    <i class="fas fa-shield-alt me-2"></i>Security
+                </button>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+
+<div class="row">
+    <div class="col-12">
+        <div class="tab-content" id="settingsTabContent">
+            <div class="tab-pane fade show active" id="trading" role="tabpanel">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">Trading Configuration</h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="tradingForm">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h6 class="text-primary">Position Sizing</h6>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">Buy Amount (SOL)</label>
+                                        <input type="number" class="form-control" id="buy_amount_sol" step="0.1" min="0.1" max="10" value="0.5">
+                                        <div class="form-text">Amount of SOL to invest per position</div>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">Maximum Positions</label>
+                                        <input type="number" class="form-control" id="max_positions" min="1" max="20" value="3">
+                                        <div class="form-text">Maximum number of concurrent positions</div>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">Position Size (% of Balance)</label>
+                                        <input type="range" class="form-range" id="position_size_percentage" min="5" max="50" value="20">
+                                        <div class="d-flex justify-content-between">
+                                            <small>5%</small>
+                                            <small id="position_size_percentageValue">20%</small>
+                                            <small>50%</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <h6 class="text-primary">Slippage & Fees</h6>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">Buy Slippage (%)</label>
+                                        <input type="range" class="form-range" id="buy_slippage" min="5" max="50" value="20">
+                                        <div class="d-flex justify-content-between">
+                                            <small>5%</small>
+                                            <small id="buy_slippageValue">20%</small>
+                                            <small>50%</small>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">Sell Slippage (%)</label>
+                                        <input type="range" class="form-range" id="sell_slippage" min="5" max="50" value="25">
+                                        <div class="d-flex justify-content-between">
+                                            <small>5%</small>
+                                            <small id="sell_slippageValue">25%</small>
+                                            <small>50%</small>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">Priority Fee (Lamports)</label>
+                                        <input type="number" class="form-control" id="priority_fee_lamports" min="1000" max="100000" value="10000">
+                                        <div class="form-text">Higher fees = faster transaction confirmation</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h6 class="text-primary">Exit Strategy</h6>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">Take Profit Multiplier</label>
+                                        <input type="number" class="form-control" id="take_profit_multiplier" step="0.1" min="1.1" max="100" value="10">
+                                        <div class="form-text">Exit when price reaches X times entry price</div>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">Stop Loss (%)</label>
+                                        <input type="range" class="form-range" id="stop_loss_percentage" min="10" max="90" value="50">
+                                        <div class="d-flex justify-content-between">
+                                            <small>10%</small>
+                                            <small id="stop_loss_percentageValue">50%</small>
+                                            <small>90%</small>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">Moonbag (%)</label>
+                                        <input type="range" class="form-range" id="moonbag_percentage" min="0" max="50" value="15">
+                                        <div class="d-flex justify-content-between">
+                                            <small>0%</small>
+                                            <small id="moonbag_percentageValue">15%</small>
+                                            <small>50%</small>
+                                        </div>
+                                        <div class="form-text">Percentage to keep when taking profit</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <h6 class="text-primary">Time Limits</h6>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">Max Position Age (Hours)</label>
+                                        <input type="number" class="form-control" id="max_position_age_hours" min="1" max="168" value="24">
+                                        <div class="form-text">Automatically close positions after this time</div>
+                                    </div>
+                                    
+                                    {# Add trading hours and weekend trade if implemented in Config #}
+                                    {# <div class="mb-3">
+                                        <label class="form-label">Trading Hours</label>
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <input type="time" class="form-control" id="trading_start_time" value="00:00">
+                                                <small class="text-muted">Start Time (UTC)</small>
+                                            </div>
+                                            <div class="col-6">
+                                                <input type="time" class="form-control" id="trading_end_time" value="23:59">
+                                                <small class="text-muted">End Time (UTC)</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="trade_weekends" checked>
+                                        <label class="form-check-label" for="trade_weekends">
+                                            Trade on weekends
+                                        </label>
+                                    </div> #}
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tab-pane fade" id="filters" role="tabpanel">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">Token Filtering</h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="filtersForm">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h6 class="text-primary">Safety Requirements</h6>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">Minimum Safety Score</label>
+                                        <input type="range" class="form-range" id="min_safety_score" min="0" max="100" value="80">
+                                        <div class="d-flex justify-content-between">
+                                            <small>0</small>
+                                            <small id="min_safety_scoreValue">80</small>
+                                            <small>100</small>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-check mb-3">
+                                        <input class="form-check-input" type="checkbox" id="require_locked_liquidity" checked>
+                                        <label class="form-check-label" for="require_locked_liquidity">
+                                            Require locked liquidity
+                                        </label>
+                                    </div>
+                                    
+                                    <div class="form-check mb-3">
+                                        <input class="form-check-input" type="checkbox" id="require_disabled_mint" checked>
+                                        <label class="form-check-label" for="require_disabled_mint">
+                                            Require disabled mint function
+                                        </label>
+                                    </div>
+                                    
+                                    <div class="form-check mb-3">
+                                        <input class="form-check-input" type="checkbox" id="require_verified_contract">
+                                        <label class="form-check-label" for="require_verified_contract">
+                                            Require verified contract
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <h6 class="text-primary">Market Cap Limits</h6>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">Minimum Market Cap ($)</label>
+                                        <input type="number" class="form-control" id="min_market_cap" min="1000" value="10000">
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">Maximum Market Cap ($)</label>
+                                        <input type="number" class="form-control" id="max_market_cap" min="10000" value="1000000">
+                                    </div>
+                                    
+                                    <h6 class="text-primary mt-4">Liquidity Requirements</h6>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">Minimum Liquidity ($)</label>
+                                        <input type="number" class="form-control" id="min_liquidity" min="1000" value="5000">
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">Minimum Volume 24h ($)</label>
+                                        <input type="number" class="form-control" id="min_volume_24h" min="100" value="1000">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h6 class="text-primary">Social Sentiment</h6>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">Minimum Social Score</label>
+                                        <input type="range" class="form-range" id="min_social_score" min="0" max="100" value="60">
+                                        <div class="d-flex justify-content-between">
+                                            <small>0%</small>
+                                            <small id="min_social_scoreValue">60%</small>
+                                            <small>100%</small>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">Minimum Mentions Count</label>
+                                        <input type="number" class="form-control" id="min_mentions_count" min="1" value="5">
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <h6 class="text-primary">Age Limits</h6>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">Maximum Token Age (Hours)</label>
+                                        <input type="number" class="form-control" id="max_age_hours" min="1" max="168" value="24">
+                                        <div class="form-text">Only trade tokens younger than this</div>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">Minimum Token Age (Minutes)</label>
+                                        <input type="number" class="form-control" id="min_age_minutes" min="0" max="60" value="5">
+                                        <div class="form-text">Avoid extremely new tokens</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tab-pane fade" id="monitoring" role="tabpanel">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">Social Media Monitoring</h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="monitoringForm">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h6 class="text-primary">Check Intervals</h6>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">Twitter Check Interval (seconds)</label>
+                                        <input type="number" class="form-control" id="twitter_check_interval" min="10" max="300" value="36000">
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">Reddit Check Interval (seconds)</label>
+                                        <input type="number" class="form-control" id="reddit_check_interval" min="30" max="600" value="60">
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">Discord Check Interval (seconds)</label>
+                                        <input type="number" class="form-control" id="discord_check_interval" min="30" max="600" value="45">
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <h6 class="text-primary">Platform Settings</h6>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">Telegram Check Interval (seconds)</label>
+                                        <input type="number" class="form-control" id="telegram_check_interval" min="30" max="600" value="60">
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">TikTok Check Interval (seconds)</label>
+                                        <input type="number" class="form-control" id="tiktok_check_interval" min="60" max="600" value="300">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-12">
+                                    <h6 class="text-primary">Monitored Keywords</h6>
+                                    <div class="mb-3">
+                                        <label class="form-label">Keywords (comma-separated)</label>
+                                        <textarea class="form-control" id="memecoin_keywords" rows="3" placeholder="pump, moon, gem, memecoin, solana, new token">pump, moon, gem, memecoin, solana, new token, fair launch, presale, just launched</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-12">
+                                    <h6 class="text-primary">Twitter Accounts to Monitor</h6>
+                                    <div class="mb-3">
+                                        <label class="form-label">Accounts (one per line, without @)</label>
+                                        <textarea class="form-control" id="twitter_accounts" rows="4" placeholder="SolanaFloor&#10;RaydiumProtocol&#10;JupiterExchange">SolanaFloor
+RaydiumProtocol
+JupiterExchange
+pumpdotfun</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-12">
+                                    <h6 class="text-primary">Reddit Subreddits to Monitor</h6>
+                                    <div class="mb-3">
+                                        <label class="form-label">Subreddits (one per line)</label>
+                                        <textarea class="form-control" id="reddit_subreddits" rows="4" placeholder="solana&#10;SolanaMemeCoins&#10;cryptomoonshots">solana
+SolanaMemeCoins
+cryptomoonshots
+CryptoGemDiscovery
+memecoin</textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <h6 class="text-primary">Discord Channel IDs to Monitor</h6>
+                                    <div class="mb-3">
+                                        <label class="form-label">Channel IDs (comma-separated)</label>
+                                        <input type="text" class="form-control" id="discord_channels" placeholder="123456789012345678,987654321098765432">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <h6 class="text-primary">Telegram Channel Usernames to Monitor</h6>
+                                    <div class="mb-3">
+                                        <label class="form-label">Channel Usernames (one per line)</label>
+                                        <textarea class="form-control" id="telegram_channels" rows="4" placeholder="SolanaOfficial&#10;PumpFunAnnouncements"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tab-pane fade" id="notifications" role="tabpanel">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">Notification Configuration</h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="notificationsForm">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h6 class="text-primary">Webhook Settings</h6>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">Discord Webhook URL</label>
+                                        <input type="url" class="form-control" id="discord_webhook" placeholder="https://discord.com/api/webhooks/...">
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">Slack Webhook URL</label>
+                                        <input type="url" class="form-control" id="slack_webhook" placeholder="https://hooks.slack.com/services/...">
+                                    </div>
+                            </div>
+                                
+                                <div class="col-md-6">
+                                    <h6 class="text-primary">Email Settings</h6>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">Email Address</label>
+                                        <input type="email" class="form-control" id="email_address" placeholder="your@email.com">
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">SMTP Server</label>
+                                        <input type="text" class="form-control" id="smtp_server" placeholder="smtp.gmail.com">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-12">
+                                    <h6 class="text-primary">Notification Types</h6>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" id="notify_trades" checked>
+                                                <label class="form-check-label" for="notify_trades">
+                                                    Trade executions
+                                                </label>
+                                            </div>
+                                            
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" id="notify_discoveries" checked>
+                                                <label class="form-check-label" for="notify_discoveries">
+                                                    Token discoveries
+                                                </label>
+                                            </div>
+                                            
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" id="notify_errors" checked>
+                                                <label class="form-check-label" for="notify_errors">
+                                                    Errors and warnings
+                                                </label>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="col-md-6">
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" id="notify_pnl">
+                                                <label class="form-check-label" for="notify_pnl">
+                                                    P&L updates
+                                                </label>
+                                            </div>
+                                            
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" id="notify_status">
+                                                <label class="form-check-label" for="notify_status">
+                                                    Bot status changes
+                                                </label>
+                                            </div>
+                                            
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" id="notify_daily">
+                                                <label class="form-check-label" for="notify_daily">
+                                                    Daily summaries
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tab-pane fade" id="security" role="tabpanel">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">Security & Risk Management</h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="securityForm">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h6 class="text-primary">Risk Limits</h6>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">Maximum Daily Loss (%)</label>
+                                        <input type="range" class="form-range" id="max_daily_loss_percentage" min="1" max="50" value="10">
+                                        <div class="d-flex justify-content-between">
+                                            <small>1%</small>
+                                            <small id="max_daily_loss_percentageValue">10%</small>
+                                            <small>50%</small>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">Emergency Stop Loss (%)</label>
+                                        <input type="range" class="form-range" id="emergency_stop_loss_percentage" min="5" max="95" value="80">
+                                        <div class="d-flex justify-content-between">
+                                            <small>5%</small>
+                                            <small id="emergency_stop_loss_percentageValue">80%</small>
+                                            <small>95%</small>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-check mb-3">
+                                        <input class="form-check-input" type="checkbox" id="emergency_stop_enabled" checked>
+                                        <label class="form-check-label" for="emergency_stop_enabled">
+                                            Enable emergency kill switch
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <h6 class="text-primary">Wallet Security</h6>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">Wallet Address</label>
+                                        <input type="text" class="form-control" id="wallet_address" readonly placeholder="Connect wallet to view">
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">Current SOL Balance</label>
+                                        <input type="text" class="form-control" id="sol_balance" readonly placeholder="0.0000 SOL">
+                                    </div>
+                                    
+                                    <button type="button" class="btn btn-outline-primary mb-3" onclick="refreshBalance()">
+                                        <i class="fas fa-sync-alt me-1"></i>Refresh Balance
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-12">
+                                    <h6 class="text-primary">Blacklisted Tokens</h6>
+                                    <div class="mb-3">
+                                        <label class="form-label">Contract Addresses (one per line)</label>
+                                        <textarea class="form-control" id="blacklisted_tokens" rows="4" placeholder="Enter contract addresses of tokens to avoid"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body d-flex justify-content-between align-items-center">
+                <div>
+                    <h6 class="mb-1">Configuration Status</h6>
+                    <small class="text-muted">Last saved: <span id="lastSaved">Never</span></small>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-outline-secondary" onclick="resetSettings()">
+                        <i class="fas fa-undo me-1"></i>Reset to Defaults
+                    </button>
+                    <button type="button" class="btn btn-outline-primary" onclick="exportSettings()">
+                        <i class="fas fa-download me-1"></i>Export Settings
+                    </button>
+                    <button type="button" class="btn btn-outline-info" onclick="importSettings()">
+                        <i class="fas fa-upload me-1"></i>Import Settings
+                    </button>
+                    <button type="button" class="btn btn-success" onclick="saveSettings()">
+                        <i class="fas fa-save me-1"></i>Save All Settings
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Hidden file input for import -->
+<input type="file" id="importFile" accept=".json" style="display: none;">
+{% endblock %}
+
+{% block extra_js %}
+
+<script>
+    let currentSettings = {};
+    // Initialize page
+    document.addEventListener('DOMContentLoaded', function() {
+        loadSettings();
+        setupRangeSliders();
+        setupEventListeners();
+    });
+
+    // Setup range slider updates
+    function setupRangeSliders() {
+        const rangeSliders = [
+            { slider: 'position_size_percentage', display: 'position_size_percentageValue', suffix: '%' },
+            { slider: 'buy_slippage', display: 'buy_slippageValue', suffix: '%' },
+            { slider: 'sell_slippage', display: 'sell_slippageValue', suffix: '%' },
+            { slider: 'stop_loss_percentage', display: 'stop_loss_percentageValue', suffix: '%' },
+            { slider: 'moonbag_percentage', display: 'moonbag_percentageValue', suffix: '%' },
+            { slider: 'min_safety_score', display: 'min_safety_scoreValue', suffix: '' },
+            { slider: 'min_social_score', display: 'min_social_scoreValue', suffix: '%' },
+            { slider: 'max_daily_loss_percentage', display: 'max_daily_loss_percentageValue', suffix: '%' },
+            { slider: 'emergency_stop_loss_percentage', display: 'emergency_stop_loss_percentageValue', suffix: '%' }
+        ];
+        
+        rangeSliders.forEach(config => {
+            const slider = document.getElementById(config.slider);
+            const display = document.getElementById(config.display);
+            
+            if (slider && display) {
+                slider.addEventListener('input', function() {
+                    display.textContent = this.value + config.suffix;
+                });
+                
+                // Initialize display
+                display.textContent = slider.value + config.suffix;
+            }
+        });
+    }
+    
+    // Setup event listeners
+    function setupEventListeners() {
+        // Tab change event
+        document.querySelectorAll('[data-bs-toggle="tab"]').forEach(tab => {
+            tab.addEventListener('shown.bs.tab', function(event) {
+                // Could trigger specific actions when tabs change
+            });
+        });
+        // Auto-save on input changes (debounced)
+        const inputs = document.querySelectorAll('input, textarea, select');
+        inputs.forEach(input => {
+            input.addEventListener('change', debounce(function() {
+                // Auto-save disabled for now
+                // saveSettings();
+            }, 1000));
+        });
+        // Import file handler
+        document.getElementById('importFile').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        const settings = JSON.parse(e.target.result);
+                        applySettings(settings);
+                        showNotification('success', { message: 'Settings imported successfully' });
+                    } catch (error) {
+                        showNotification('error', { message: 'Invalid settings file' });
+                    }
+                };
+                reader.readAsText(file);
+            }
+        });
+    }
+    
+    // Load settings from server
+    function loadSettings() {
+        fetch('/api/config')
+            .then(response => response.json())
+            .then(data => {
+                currentSettings = data;
+                applySettings(data);
+            })
+            .catch(error => {
+                console.error('Error loading settings:', error);
+                showNotification('error', { message: 'Failed to load settings' });
+            });
+    }
+    
+    // Apply settings to form fields
+    function applySettings(settings) {
+        try {
+            // Trading settings
+            if (settings.trading) {
+                setValue('buy_amount_sol', settings.trading.buy_amount_sol);
+                setValue('max_positions', settings.trading.max_positions);
+                setValue('position_size_percentage', settings.trading.position_size_percentage * 100);
+                setValue('buy_slippage', settings.trading.buy_slippage * 100);
+                setValue('sell_slippage', settings.trading.sell_slippage * 100);
+                setValue('priority_fee_lamports', settings.trading.priority_fee_lamports);
+                setValue('take_profit_multiplier', settings.trading.take_profit_multiplier);
+                setValue('stop_loss_percentage', settings.trading.stop_loss_percentage * 100);
+                setValue('moonbag_percentage', settings.trading.moonbag_percentage * 100);
+                setValue('max_position_age_hours', settings.trading.max_position_age_hours);
+                // setChecked('trade_weekends', settings.trading.trade_weekends);
+                // setValue('trading_start_time', settings.trading.trading_start_time);
+                // setValue('trading_end_time', settings.trading.trading_end_time);
+            }
+            
+            // Filter settings
+            if (settings.filters) {
+                setValue('min_safety_score', settings.filters.min_safety_score);
+                setValue('min_market_cap', settings.filters.min_market_cap);
+                setValue('max_market_cap', settings.filters.max_market_cap);
+                setValue('min_liquidity', settings.filters.min_liquidity);
+                setValue('min_volume_24h', settings.filters.min_volume_24h);
+                setValue('min_social_score', settings.filters.min_social_score * 100);
+                setValue('min_mentions_count', settings.filters.min_mentions_count);
+                setValue('max_age_hours', settings.filters.max_age_hours);
+                setValue('min_age_minutes', settings.filters.min_age_minutes);
+                setChecked('require_locked_liquidity', settings.filters.require_locked_liquidity);
+                setChecked('require_disabled_mint', settings.filters.require_disabled_mint);
+                setChecked('require_verified_contract', settings.filters.require_verified_contract);
+            }
+            
+            // Monitoring settings
+            if (settings.monitoring) {
+                setValue('twitter_check_interval', settings.monitoring.twitter_check_interval);
+                setValue('reddit_check_interval', settings.monitoring.reddit_check_interval);
+                setValue('discord_check_interval', settings.monitoring.discord_check_interval);
+                setValue('telegram_check_interval', settings.monitoring.telegram_check_interval);
+                setValue('tiktok_check_interval', settings.monitoring.tiktok_check_interval);
+                setValue('memecoin_keywords', settings.monitoring.memecoin_keywords ? settings.monitoring.memecoin_keywords.join(', ') : '');
+                setValue('twitter_accounts', settings.monitoring.twitter_accounts ? settings.monitoring.twitter_accounts.join('\n') : '');
+                setValue('reddit_subreddits', settings.monitoring.reddit_subreddits ? settings.monitoring.reddit_subreddits.join('\n') : '');
+                setValue('discord_channels', settings.monitoring.discord_channels ? settings.monitoring.discord_channels.join(',') : '');
+                setValue('telegram_channels', settings.monitoring.telegram_channels ? settings.monitoring.telegram_channels.join('\n') : '');
+            }
+
+            // Notification settings
+            if (settings.notifications) {
+                setValue('discord_webhook', settings.notifications.discord_webhook);
+                setValue('slack_webhook', settings.notifications.slack_webhook);
+                setValue('email_address', settings.notifications.email_address);
+                setValue('smtp_server', settings.notifications.smtp_server);
+                setChecked('notify_trades', settings.notifications.notify_trades);
+                setChecked('notify_discoveries', settings.notifications.notify_discoveries);
+                setChecked('notify_errors', settings.notifications.notify_errors);
+                setChecked('notify_pnl', settings.notifications.notify_pnl);
+                setChecked('notify_status', settings.notifications.notify_status);
+                setChecked('notify_daily', settings.notifications.notify_daily);
+            }
+
+            // Security settings
+            if (settings.security) {
+                setValue('max_daily_loss_percentage', settings.security.max_daily_loss_percentage * 100);
+                setValue('emergency_stop_loss_percentage', settings.security.emergency_stop_loss_percentage * 100);
+                setChecked('emergency_stop_enabled', settings.security.emergency_stop_enabled);
+                setValue('blacklisted_tokens', settings.security.blacklisted_tokens ? settings.security.blacklisted_tokens.join('\n') : '');
+                // Wallet address and balance are read-only, not set here
+            }
+            
+            // Update range slider displays
+            setupRangeSliders();
+            document.getElementById('lastSaved').textContent = new Date().toLocaleString();
+            
+        } catch (error) {
+            console.error('Error applying settings:', error);
+            showNotification('error', { message: 'Error applying settings' });
+        }
+    }
+    
+    // Helper functions
+    function setValue(id, value) {
+        const element = document.getElementById(id);
+        if (element && value !== undefined) {
+            if (element.type === 'textarea' && Array.isArray(value)) {
+                element.value = value.join('\n');
+            } else if (element.type === 'checkbox') {
+                element.checked = value;
+            } else {
+                element.value = value;
+            }
+            // Trigger change event for range sliders
+            if (element.type === 'range') {
+                element.dispatchEvent(new Event('input'));
+            }
+        }
+    }
+    
+    function setChecked(id, checked) {
+        const element = document.getElementById(id);
+        if (element && checked !== undefined) {
+            element.checked = checked;
+        }
+    }
+    
+    function getValue(id) {
+        const element = document.getElementById(id);
+        if (element) {
+            if (element.type === 'checkbox') {
+                return element.checked;
+            } else if (element.type === 'number' || element.type === 'range') {
+                return parseFloat(element.value);
+            } else if (element.tagName === 'TEXTAREA') {
+                return element.value.split('\n').filter(t => t.trim());
+            } else {
+                return element.value;
+            }
+        }
+        return null;
+    }
+    
+    // Collect all settings from form
+	function collectSettings() {
+        return {
+            trading: {
+                buy_amount_sol: getValue('buy_amount_sol'),
+                max_positions: getValue('max_positions'),
+                position_size_percentage: getValue('position_size_percentage'), // Send as 0-100
+                buy_slippage: getValue('buy_slippage'),                         // Send as 0-100
+                sell_slippage: getValue('sell_slippage'),                       // Send as 0-100
+                priority_fee_lamports: getValue('priority_fee_lamports'),
+                take_profit_multiplier: getValue('take_profit_multiplier'),
+                stop_loss_percentage: getValue('stop_loss_percentage'),         // Send as 0-100
+                moonbag_percentage: getValue('moonbag_percentage'),             // Send as 0-100
+                max_position_age_hours: getValue('max_position_age_hours')
+            },
+            filters: {
+                min_safety_score: getValue('min_safety_score'),
+                min_market_cap: getValue('min_market_cap'),
+                max_market_cap: getValue('max_market_cap'),
+                min_liquidity: getValue('min_liquidity'),
+                min_volume_24h: getValue('min_volume_24h'),
+                min_social_score: getValue('min_social_score'),                 // Send as 0-100
+                min_mentions_count: getValue('min_mentions_count'),
+                max_age_hours: getValue('max_age_hours'),
+                min_age_minutes: getValue('min_age_minutes'),
+                require_locked_liquidity: getValue('require_locked_liquidity'),
+                require_disabled_mint: getValue('require_disabled_mint'),
+                require_verified_contract: getValue('require_verified_contract')
+            },
+            monitoring: {
+                twitter_check_interval: getValue('twitter_check_interval'),
+                reddit_check_interval: getValue('reddit_check_interval'),
+                discord_check_interval: getValue('discord_check_interval'),
+                telegram_check_interval: getValue('telegram_check_interval'),
+                tiktok_check_interval: getValue('tiktok_check_interval'),
+                memecoin_keywords: getValue('memecoin_keywords'),
+                twitter_accounts: getValue('twitter_accounts'),
+                reddit_subreddits: getValue('reddit_subreddits'),
+                // Correctly convert comma-separated string to an array of numbers
+                discord_channels: getValue('discord_channels').split(',').map(s => parseInt(s.trim())).filter(n => !isNaN(n) && n > 0),
+                telegram_channels: getValue('telegram_channels'),
+            },
+            security: {
+                max_daily_loss_percentage: getValue('max_daily_loss_percentage'), // Send as 0-100
+                emergency_stop_loss_percentage: getValue('emergency_stop_loss_percentage'), // Send as 0-100
+                emergency_stop_enabled: getValue('emergency_stop_enabled'),
+                blacklisted_tokens: getValue('blacklisted_tokens')
+            }
+            // Note: Notifications are not included as they are environment variables
+            // and cannot be reliably updated from the web UI without writing to the .env file.
+        };
+    }
+    
+    // Save settings to server
+    function saveSettings() {
+        const settings = collectSettings();
+        fetch('/api/config', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(settings)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showNotification('success', { message: 'Settings saved successfully' });
+                document.getElementById('lastSaved').textContent = new Date().toLocaleString();
+                currentSettings = settings;
+            } else {
+                showNotification('error', { message: data.error || 'Failed to save settings' });
+            }
+        })
+        .catch(error => {
+            console.error('Error saving settings:', error);
+            showNotification('error', { message: 'Failed to save settings' });
+        });
+    }
+    
+    // Reset to default settings (update with full defaults matching your Config.py initial values)
+    function resetSettings() {
+        if (confirm('Reset all settings to defaults? This cannot be undone.')) {
+            // These should ideally come from a separate endpoint exposing default config
+            // For now, hardcode them to match Config.py defaults
+            const defaults = {
+                trading: {
+                    buy_amount_sol: 0.5,
+                    max_positions: 3,
+                    position_size_percentage: 0.2,
+                    buy_slippage: 0.20,
+                    sell_slippage: 0.25,
+                    priority_fee_lamports: 10000,
+                    take_profit_multiplier: 10.0,
+                    stop_loss_percentage: 0.50,
+                    moonbag_percentage: 0.15,
+                    max_position_age_hours: 24
+                },
+                filters: {
+                    min_safety_score: 80,
+                    min_market_cap: 10000,
+                    max_market_cap: 1000000,
+                    min_liquidity: 5000,
+                    require_locked_liquidity: true,
+                    require_verified_contract: false,
+                    require_disabled_mint: true,
+                    min_social_score: 0.6,
+                    min_mentions_count: 5,
+                    min_volume_24h: 1000,
+                    max_age_hours: 24,
+                    min_age_minutes: 5,
+                },
+                monitoring: {
+                    twitter_check_interval: 36000,
+                    reddit_check_interval: 60,
+                    discord_check_interval: 45,
+                    telegram_check_interval: 60,
+                    tiktok_check_interval: 300,
+                    memecoin_keywords: ['$','token','coin','pump','moon','gem','memecoin','solana','sol','CA:','contract','address','pumpfun','raydium','jupiter','dex','launched','presale','fair launch'],
+                    exclude_keywords: ['scam','rug','fake','honeypot','warning','caution','avoid','dangerous','suspicious','fraud'],
+                    twitter_accounts: ['@SolanaFloor', '@SolanaMobile', '@solana', '@SolanaSpaces','@RaydiumProtocol', '@JupiterExchange', '@pumpdotfun'],
+                    reddit_subreddits: ['solana', 'SolanaMemeCoins', 'cryptomoonshots', 'CryptoGemDiscovery', 'memecoin'],
+                    discord_channels: [], // These are ints, but will be empty string if from .env or default
+                    telegram_channels: [], // These are strings, but will be empty string if from .env or default
+                },
+                notifications: {
+                    discord_webhook: '',
+                    slack_webhook: '',
+                    email_address: '',
+                    smtp_server: '',
+                    notify_trades: true,
+                    notify_discoveries: true,
+                    notify_errors: true,
+                    notify_pnl: false,
+                    notify_status: false,
+                    notify_daily: false,
+                },
+                security: {
+                    max_daily_loss_percentage: 0.10,
+                    emergency_stop_loss_percentage: 0.80,
+                    emergency_stop_enabled: true,
+                    blacklisted_tokens: [],
+                }
+            };
+            
+            applySettings(defaults);
+            showNotification('info', { message: 'Settings reset to defaults' });
+        }
+    }
+    
+    // ... rest of the script
+</script>
+{% endblock %}
