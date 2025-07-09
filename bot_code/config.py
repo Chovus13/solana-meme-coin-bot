@@ -1,52 +1,79 @@
 # bot_code/config.py
-
 import os
-from dataclasses import dataclass, field # Import field
-from typing import Optional, List
+import json # For saving/loading settings
+import pathlib # For path manipulation
+from dataclasses import dataclass, field, asdict # Ensure 'asdict' is imported
+from typing import Optional, List, Dict, Any # Ensure 'Dict' and 'Any' are imported
 from dotenv import load_dotenv
 
-load_dotenv()
+# --- .env Loading --- 
+# This ensures .env is loaded once when this module is first imported.
+# Values from .env will be defaults if user_settings.json doesn't override them (for specific fields).
+env_path = pathlib.Path(__file__).resolve().parent.parent / ".env"
+if env_path.exists():
+    load_dotenv(dotenv_path=env_path, override=True)
+    print(f"[INFO] config.py: Attempted to load .env from {env_path}. Solana Key from env: {'SET' if os.getenv('SOLANA_PRIVATE_KEY') else 'NOT SET'}")
+else:
+    print(f"[WARNING] config.py: .env file not found at {env_path}.")
+
+#USER_SETTINGS_FILE = pathlib.Path(__file__).resolve().parent.parent / "user_settings.json"
+# --- User Settings JSON File Path (project root) ---
+USER_SETTINGS_FILE = pathlib.Path(__file__).resolve().parent.parent / "user_settings.json"
+print(f"[INFO] config.py: User settings file path: {USER_SETTINGS_FILE}")
+
+# --- Dataclass Definitions Start Below ---
+
 
 @dataclass
 class APIKeys:
     """API keys configuration"""
     # Twitter API
-    twitter_bearer_token: Optional[str] = os.getenv('TWITTER_BEARER_TOKEN')
-    twitter_api_key: Optional[str] = os.getenv('TWITTER_API_KEY')
-    twitter_api_secret: Optional[str] = os.getenv('TWITTER_API_SECRET')
-    twitter_access_token: Optional[str] = os.getenv('TWITTER_ACCESS_TOKEN')
-    twitter_access_secret: Optional[str] = os.getenv('TWITTER_ACCESS_SECRET')
+    # Your APIKeys definition should primarily use field(default_factory=lambda: os.getenv('KEY_NAME', 'optional_default'))
+    # For example:
+    twitter_bearer_token: Optional[str] = field(default_factory=lambda: os.getenv('TWITTER_BEARER_TOKEN'))
+    twitter_api_key: Optional[str] = field(default_factory=lambda: os.getenv('TWITTER_API_KEY'))
+    twitter_api_secret: Optional[str] = field(default_factory=lambda: os.getenv('TWITTER_API_SECRET'))
+    twitter_access_token: Optional[str] = field(default_factory=lambda: os.getenv('TWITTER_ACCESS_TOKEN'))
+    twitter_access_secret: Optional[str] = field(default_factory=lambda: os.getenv('TWITTER_ACCESS_SECRET'))
     
     # Reddit API
-    reddit_client_id: Optional[str] = os.getenv('REDDIT_CLIENT_ID')
-    reddit_client_secret: Optional[str] = os.getenv('REDDIT_CLIENT_SECRET')
-    reddit_username: Optional[str] = os.getenv('REDDIT_USERNAME')
-    reddit_password: Optional[str] = os.getenv('REDDIT_PASSWORD')
-    reddit_user_agent: str = "SolanaMemecoinBot/1.0"
-    
+    reddit_client_id: Optional[str] = field(default_factory=lambda: os.getenv('REDDIT_CLIENT_ID'))
+    reddit_client_secret: Optional[str] = field(default_factory=lambda: os.getenv('REDDIT_CLIENT_SECRET'))
+    reddit_username: Optional[str] = field(default_factory=lambda: os.getenv('REDDIT_USERNAME'))
+    reddit_password: Optional[str] = field(default_factory=lambda: os.getenv('REDDIT_PASSWORD'))
+        # ... and so on for all keys primarily sourced from .env
+    # Ensure reddit_user_agent also uses os.getenv or has a fixed default:
+    reddit_user_agent: str = field(default_factory=lambda: os.getenv('REDDIT_USER_AGENT', "SolanaMemecoinBot/1.0"))
+
     # Discord API
-    discord_token: Optional[str] = os.getenv('DISCORD_TOKEN')
+    discord_token: Optional[str] = field(default_factory=lambda: os.getenv('DISCORD_TOKEN'))
     
     # Telegram API
-    telegram_api_id: Optional[str] = os.getenv('TELEGRAM_API_ID')
-    telegram_api_hash: Optional[str] = os.getenv('TELEGRAM_API_HASH')
-    telegram_phone: Optional[str] = os.getenv('TELEGRAM_PHONE')
+    telegram_api_id: Optional[str] = field(default_factory=lambda: os.getenv('TELEGRAM_API_ID'))
+    telegram_api_hash: Optional[str] = field(default_factory=lambda: os.getenv('TELEGRAM_API_HASH'))
+    telegram_phone: Optional[str] = field(default_factory=lambda: os.getenv('TELEGRAM_PHONE'))
     
     # TikTok (unofficial)
-    tiktok_session_id: Optional[str] = os.getenv('TIKTOK_SESSION_ID')
+    tiktok_session_id: Optional[str] = field(default_factory=lambda: os.getenv('TIKTOK_SESSION_ID'))
     
     # Solana
-    solana_rpc_url: str = os.getenv('SOLANA_RPC_URL', 'https://api.mainnet-beta.solana.com')
-    solana_private_key: Optional[str] = os.getenv('SOLANA_PRIVATE_KEY')
+    solana_rpc_url: str = field(default_factory=lambda: os.getenv('SOLANA_RPC_URL', 'https://api.mainnet-beta.solana.com'))
+    solana_private_key: Optional[str] = field(default_factory=lambda: os.getenv('SOLANA_PRIVATE_KEY'))
     
     # GMGN API
-    gmgn_api_key: Optional[str] = os.getenv('GMGN_API_KEY')
+    gmgn_api_key: Optional[str] = field(default_factory=lambda: os.getenv('GMGN_API_KEY'))
     
     # Notification services
-    notification_webhook: Optional[str] = os.getenv('NOTIFICATION_WEBHOOK')
-    notification_webhook: Optional[str] = os.getenv('NOTIFICATION_WEBHOOK')
+    notification_webhook: Optional[str] = field(default_factory=lambda: os.getenv('NOTIFICATION_WEBHOOK'))
+    notification_webhook: Optional[str] = field(default_factory=lambda: os.getenv('NOTIFICATION_WEBHOOK'))
 
 
+# ... (Your existing dataclass definitions for TradingConfig, FilterConfig, MonitoringConfig should follow here) ...
+# IMPORTANT: For TradingConfig, FilterConfig, MonitoringConfig, their fields should have hardcoded default values, 
+# NOT os.getenv() directly in their field definitions, because these are the classes whose instances will be 
+# populated by .env (if specific env vars are set for their fields in Config.__post_init__) 
+# and then primarily by user_settings.json.
+# Example:
 @dataclass
 class TradingConfig:
     """Trading configuration parameters"""
@@ -99,7 +126,10 @@ class MonitoringConfig:
     ])
     reddit_subreddits: List[str] = field(default_factory=lambda: [
         'solana', 'SolanaMemeCoins', 'cryptomoonshots',
-        'CryptoGemDiscovery', 'memecoin'
+        'memecoin', 'ShitcoinCentral', 'Daytrading',
+        'shitcoinmoonshots', 'SolanaNFT', 'memecoinmoonshots',
+        'memecoins', 'binance', 'CryptoCurrency'
+        
     ])
     # Discord channels are typically IDs, convert to string for .env / UI
     discord_channels: List[int] = field(default_factory=lambda: [
@@ -152,7 +182,11 @@ class Config:
     """Main configuration class"""
 
     def __init__(self):
+        self.app_name = os.getenv('APP_NAME', 'SolanaMemecoinBot') # Add if not present
         self.api_keys = APIKeys()
+        print(f"[DEBUG] In Config.__init__: self.api_keys.REDDIT_CLIENT_ID = {self.api_keys.reddit_client_id}")
+        print(f"[DEBUG] In Config.__init__: self.api_keys.SOLANA_PRIVATE_KEY = {self.api_keys.solana_private_key}")
+        print(f"[DEBUG] In Config.__init__: self.api_keys.TWITTER_BEARER_TOKEN = {self.api_keys.twitter_bearer_token}")
         self.trading = TradingConfig()
         self.filters = FilterConfig()
         self.monitoring = MonitoringConfig()

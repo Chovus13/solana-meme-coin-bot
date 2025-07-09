@@ -17,6 +17,8 @@ from queue import Queue
 import signal
 import sys
 
+import praw # For praw.exceptions.PRAWException
+
 # Local imports
 from config import (
     api_keys, trading_config, monitoring_config, 
@@ -129,7 +131,27 @@ class SolanaMemecoinBot:
         signal.signal(signal.SIGTERM, self._signal_handler)
         
         self.logger.info("SolanaMemecoinBot initialized successfully")
-    
+        
+        # === BEGIN TEMPORARY DIAGNOSTIC FOR REDDIT PRAW ===
+        self.logger.info("Performing direct PRAW connection test from SolanaMemecoinBot.__init__...")
+        try:
+            # Ensure APIKeys are loaded for the test method if it needs them directly
+            # However, test_praw_connection takes them as direct arguments.
+            if api_keys.reddit_client_id:
+                test_successful = RedditMonitor.test_praw_connection(
+                    client_id=api_keys.reddit_client_id,
+                    client_secret=api_keys.reddit_client_secret,
+                    username=api_keys.reddit_username,
+                    password=api_keys.reddit_password,
+                    user_agent=api_keys.reddit_user_agent
+                )
+                self.logger.info(f"Direct PRAW connection test from bot __init__ {'SUCCEEDED' if test_successful else 'FAILED'}.")
+            else:
+                self.logger.warning("Reddit client ID not found in api_keys, skipping direct PRAW test.")
+        except Exception as e:
+            self.logger.error(f"Exception during direct PRAW connection test: {e}", exc_info=True)
+        # === END TEMPORARY DIAGNOSTIC FOR REDDIT PRAW ===
+
     def _signal_handler(self, signum, frame):
         """Handle shutdown signals gracefully"""
         self.logger.info(f"Received signal {signum}, shutting down gracefully...")
@@ -250,23 +272,36 @@ class SolanaMemecoinBot:
         """Start Reddit monitoring task"""
         self.logger.info("Starting Reddit monitoring...")
         
+        self.logger.info("Initializing Reddit real-time monitoring...")
+        if not self.reddit_monitor or not self.reddit_monitor.is_connected(): # Assuming is_connected() exists in RedditMonitor
+            self.logger.error("Reddit monitor not connected or not available. Cannot start real-time monitoring.")
+            # Optionally, fall back to periodic polling here if desired, or just disable.
+            # For now, we'll just not start if it's not connected.
+            return
+
         while self.running:
             try:
-                for subreddit in monitoring_config.reddit_subreddits:
-                    posts = await self.reddit_monitor.get_hot_posts(
-                        subreddit,
-                        monitoring_config.memecoin_keywords,
-                        limit=25
-                    )
-                    
-                    for post in posts:
-                        await self._process_social_message(post, 'reddit')
+                self.logger.info(f"Starting Reddit real-time stream for subreddits: {monitoring_config.reddit_subreddits} with keywords: {monitoring_config.memecoin_keywords}")
+                # The monitor_real_time method in RedditMonitor should handle its own internal looping for streaming.
+                # If it exits (e.g., due to an unrecoverable stream error it doesn't handle internally), 
+                # this loop will cause it to restart after a delay.
+                await self.reddit_monitor.monitor_real_time(
+                    subreddit_names=monitoring_config.reddit_subreddits,
+                    keywords=monitoring_config.memecoin_keywords,
+                    callback=self._process_social_message # Pass the method as a callback
+                )
                 
-                await asyncio.sleep(monitoring_config.reddit_check_interval)
-                
+                # If monitor_real_time exits (e.g., praw stream error it couldn't recover from),
+                # log it and wait before retrying the stream.
+                self.logger.warning("Reddit real-time monitor stream ended. Will attempt to restart after a delay.")
+                await asyncio.sleep(60)  # Wait 60 seconds before restarting stream
+
+            except praw.exceptions.PRAWException as e: # Catch PRAW specific exceptions from the stream setup
+                self.logger.error(f"PRAWException in Reddit real-time monitoring task: {e}. Retrying after delay.", exc_info=True)
+                await asyncio.sleep(300) # Wait 5 minutes on PRAW specific errors
             except Exception as e:
-                self.logger.error(f"Error in Reddit monitoring: {e}")
-                await asyncio.sleep(60)
+                self.logger.error(f"Unexpected error in Reddit real-time monitoring task: {e}. Retrying after delay.", exc_info=True)
+                await asyncio.sleep(300)  # Wait 5 minutes on other errors before retrying stream
     
     async def _start_discord_monitoring(self):
         """Start Discord monitoring task"""
@@ -340,8 +375,14 @@ class SolanaMemecoinBot:
             self.processed_messages.add(message_id)
             
             # Extract potential token information
+            if source == 'reddit':
+                self.logger.debug(f"Processing Reddit message for token info. Post ID: {message.get('id')}, URL: {message.get('url')}")
+            
             token_info = self._extract_token_info(message, source)
             
+            if source == 'reddit':
+                self.logger.debug(f"Token info extracted from Reddit post {message.get('id')}: {token_info}")
+
             if token_info:
                 discovery = TokenDiscovery(
                     symbol=token_info['symbol'],
@@ -368,7 +409,12 @@ class SolanaMemecoinBot:
         import re
         
         text = message.get('text', message.get('content', ''))
+        if source == 'reddit':
+            self.logger.debug(f"Extracting token info from text (first 100 chars): '{text[:100]}...'")
+
         if not text:
+            if source == 'reddit':
+                self.logger.debug("No text content found in Reddit message for token extraction.")
             return None
         
         # Look for contract addresses (Solana addresses are base58, 32-44 chars)
