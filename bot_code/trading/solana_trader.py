@@ -15,10 +15,6 @@ try:
     from solana.rpc.async_api import AsyncClient
     from solana.rpc.commitment import Commitment
     from solana.rpc.types import TxOpts
-    from solana.keypair import Keypair
-    from solana.transaction import Transaction
-    from solana.system_program import transfer, TransferParams
-    from solana.publickey import PublicKey
     from solders.signature import Signature
     from solders.pubkey import Pubkey
     from solders.keypair import Keypair as SoldersKeypair
@@ -26,8 +22,11 @@ try:
     from spl.token.instructions import get_associated_token_address, create_associated_token_account
     from spl.token.constants import TOKEN_PROGRAM_ID
     HAS_SOLANA = True
-except ImportError:
+    print("[DEBUG] Solana/Solders/SPL imports appear successful in solana_trader.py")
+except ImportError as e:
     HAS_SOLANA = False
+    print(f"[DEBUG] ERROR importing Solana/Solders/SPL in solana_trader.py: {e}")
+    print("[DEBUG] HAS_SOLANA will be False. Check Solana package installations in your venv.")
 
 try:
     import requests
@@ -69,12 +68,20 @@ class SolanaTrader:
                 self.client = AsyncClient(api_keys.solana_rpc_url, commitment=Commitment("confirmed"))
                 
                 # Initialize wallet
-                private_key_bytes = bytes.fromhex(api_keys.solana_private_key)
-                self.wallet = SoldersKeypair.from_bytes(private_key_bytes)
+                # Assuming SOLANA_PRIVATE_KEY in .env is a base58 encoded string
+                if not isinstance(api_keys.solana_private_key, str):
+                    raise ValueError("SOLANA_PRIVATE_KEY must be a string.")
+                
+                self.logger.info(f"Attempting to load wallet from base58 private key: {api_keys.solana_private_key[:4]}...{api_keys.solana_private_key[-4:]}")
+                self.wallet = SoldersKeypair.from_base58_string(api_keys.solana_private_key)
                 
                 self.logger.info(f"Solana trader initialized with wallet: {self.wallet.pubkey()}")
-            except Exception as e:
-                self.logger.error(f"Failed to initialize Solana trader: {e}")
+            except ValueError as ve: # Catch specific error if key is not valid base58 or wrong type
+                self.logger.error(f"Failed to initialize Solana trader due to private key error: {ve}. Ensure SOLANA_PRIVATE_KEY in .env is a valid base58 encoded string.")
+                self.client = None
+                self.wallet = None
+            except Exception as e: # Catch other general errors
+                self.logger.error(f"Failed to initialize Solana trader: {e}", exc_info=True) # Added exc_info for more detail
                 self.client = None
                 self.wallet = None
         else:
