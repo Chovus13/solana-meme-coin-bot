@@ -32,7 +32,10 @@ class BotManager:
         self.running = False
 
         # Setup logging
-        setup_logging()
+        setup_logging(app_name=self.config.app_name, 
+              log_level=self.config.log_level, 
+              log_dir=self.config.log_directory)
+
         self.logger = logging.getLogger(__name__)
 
         # Setup signal handlers
@@ -50,6 +53,9 @@ class BotManager:
             self.logger.info("🚀 Starting Solana Memecoin Trading Bot...")
 
             # Validate configuration
+            self.logger.info(f"[DEBUG] In BotManager.start (before validate): self.config.api_keys.REDDIT_CLIENT_ID = {self.config.api_keys.reddit_client_id}")
+            self.logger.info(f"[DEBUG] In BotManager.start (before validate): self.config.api_keys.SOLANA_PRIVATE_KEY = {self.config.api_keys.solana_private_key}")
+            self.logger.info(f"[DEBUG] In BotManager.start (before validate): self.config.api_keys.TWITTER_BEARER_TOKEN = {self.config.api_keys.twitter_bearer_token}")
             if not self.config.validate():
                 self.logger.error("❌ Configuration validation failed. Please check your settings.")
                 return False
