@@ -1,0 +1,69 @@
+{
+  "trading": {
+    "buy_amount_sol": 0.02,
+    "max_positions": 3,
+    "position_size_percentage": 20,
+    "buy_slippage": 20,
+    "sell_slippage": 25,
+    "priority_fee_lamports": 10000,
+    "take_profit_multiplier": 10,
+    "stop_loss_percentage": 50,
+    "moonbag_percentage": 15,
+    "max_position_age_hours": 24
+  },
+  "filters": {
+    "min_safety_score": 80,
+    "min_market_cap": 10000,
+    "max_market_cap": 1000000,
+    "min_liquidity": 5000,
+    "min_volume_24h": 1000,
+    "min_social_score": 60,
+    "min_mentions_count": 5,
+    "max_age_hours": 24,
+    "min_age_minutes": 5,
+    "require_locked_liquidity": true,
+    "require_disabled_mint": true,
+    "require_verified_contract": false
+  },
+  "monitoring": {
+    "twitter_check_interval": 36000,
+    "reddit_check_interval": 60,
+    "discord_check_interval": 45,
+    "telegram_check_interval": 60,
+    "tiktok_check_interval": 300,
+    "memecoin_keywords": [
+      "$, token, coin, pump, moon, gem, memecoin, solana, sol, CA:, contract, address, pumpfun, raydium, jupiter, dex, launched, presale, fair launch"
+    ],
+    "twitter_accounts": [
+      "@SolanaFloor",
+      "@SolanaMobile",
+      "@solana",
+      "@SolanaSpaces",
+      "@RaydiumProtocol",
+      "@JupiterExchange",
+      "@pumpdotfun"
+    ],
+    "reddit_subreddits": [
+      "solana",
+      "SolanaMemeCoins",
+      "cryptomoonshots",
+      "memecoin",
+      "ShitcoinCentral",
+      "Daytrading",
+      "shitcoinmoonshots",
+      "SolanaNFT",
+      "memecoinmoonshots",
+      "memecoins",
+      "binance",
+      "CryptoCurrency"
+    ],
+    "discord_channels": [],
+    "telegram_channels": []
+  },
+  "security": {
+    "max_daily_loss_percentage": 50,
+    "emergency_stop_loss_percentage": 80,
+    "emergency_stop_enabled": true,
+    "blacklisted_tokens": []
+  }
+}
