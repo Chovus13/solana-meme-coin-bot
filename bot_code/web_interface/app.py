@@ -11,6 +11,7 @@ import threading
 import os
 
 from flask import Flask, render_template, request, jsonify, redirect, url_for, session
+from bot_code.utils.config_handler import save_config_to_file, load_config_from_file
 from flask_socketio import SocketIO, emit, join_room, leave_room
 from flask_cors import CORS
 
@@ -256,62 +257,17 @@ class WebInterface:
             else:  # POST request
                 try:
                     new_config = request.json
-
-                    # --- Trading Config ---
-                    if 'trading' in new_config:
-                        trading_data = new_config['trading']
-                        for key, value in trading_data.items():
-                            if hasattr(trading_config, key):
-                                # Convert percentage values from UI (0-100) to float (0.0-1.0)
-                                if 'percentage' in key or 'slippage' in key:
-                                    setattr(trading_config, key, float(value) / 100.0)
-                                else:
-                                    # Convert to the correct type from the dataclass definition
-                                    field_type = trading_config.__annotations__[key]
-                                    setattr(trading_config, key, field_type(value))
-
-                    # --- Filter Config ---
-                    if 'filters' in new_config:
-                        filter_data = new_config['filters']
-                        for key, value in filter_data.items():
-                            if hasattr(filter_config, key):
-                                # Convert social score
-                                if key == 'min_social_score':
-                                     setattr(filter_config, key, float(value) / 100.0)
-                                else:
-                                    field_type = filter_config.__annotations__[key]
-                                    setattr(filter_config, key, field_type(value))
-
-                    # --- Monitoring Config ---
-                    if 'monitoring' in new_config:
-                        monitoring_data = new_config['monitoring']
-                        for key, value in monitoring_data.items():
-                            if hasattr(monitoring_config, key):
-                                # Handle lists from textareas
-                                if key in ['memecoin_keywords', 'twitter_accounts', 'reddit_subreddits', 'telegram_channels', 'discord_channels']:
-                                     setattr(monitoring_config, key, value)
-                                else:
-                                    field_type = monitoring_config.__annotations__[key]
-                                    setattr(monitoring_config, key, field_type(value))
-
-                    # --- Security Config ---
-                    if 'security' in new_config:
-                        security_data = new_config['security']
-                        # These map back to the trading_config object
-                        if 'max_daily_loss_percentage' in security_data:
-                            trading_config.max_daily_loss_percentage = float(security_data['max_daily_loss_percentage']) / 100.0
-                        if 'emergency_stop_loss_percentage' in security_data:
-                            trading_config.emergency_stop_loss_percentage = float(security_data['emergency_stop_loss_percentage']) / 100.0
-                        # Note: emergency_stop_enabled requires restart as it's from .env
-
+                    
+                    # Save the entire configuration to persistent storage
+                    if not save_config_to_file(new_config):
+                        return jsonify({'success': False, 'error': 'Failed to save configuration'}), 500
+                    
                     # Re-validate the config
                     if not validate_config():
-                        self.logger.warning("Updated configuration failed validation.")
-                        # The bot will continue with the last valid config, but the UI might show the invalid one.
-                        return jsonify({'success': False, 'error': 'Configuration updated but is invalid. Check bot logs.'}), 400
+                        return jsonify({'success': False, 'error': 'Configuration is invalid. Check bot logs.'}), 400
 
-                    self.logger.info("Configuration updated successfully from web interface.")
-                    return jsonify({'success': True, 'message': 'Configuration updated successfully'})
+                    self.logger.info("Configuration saved successfully from web interface.")
+                    return jsonify({'success': True, 'message': 'Configuration saved successfully'})
 
                 except Exception as e:
                     self.logger.error(f"Error updating configuration: {e}", exc_info=True)
