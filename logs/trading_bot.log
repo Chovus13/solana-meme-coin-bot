@@ -1,0 +1,425 @@
+2025-07-10 16:44:26,578 - WebInterface - INFO - logger:setup_logger:172 - Logger '{name}' initialized (instance: {bot_instance_id}) at effective level {logging.getLevelName(logger.getEffectiveLevel())}.
+2025-07-10 16:44:26,634 - WebInterface - INFO - app:__init__:79 - Web interface initialized
+2025-07-10 16:44:26,645 - SolanaMemecoinBot - INFO - logger:setup_logger:172 - Logger '{name}' initialized (instance: {bot_instance_id}) at effective level {logging.getLevelName(logger.getEffectiveLevel())}.
+2025-07-10 16:44:26,647 - SolanaMemecoinBot - DEBUG - logger:setup_logger:173 - This is a test DEBUG message from logger '{name}' to confirm DEBUG output.
+2025-07-10 16:44:26,648 - SolanaMemecoinBot - INFO - logger:setup_application_logging:362 - Application logging initialized
+2025-07-10 16:44:26,648 - SolanaMemecoinBot - INFO - logger:setup_application_logging:363 - Log level: DEBUG
+2025-07-10 16:44:26,649 - SolanaMemecoinBot - INFO - logger:setup_application_logging:364 - Log directory: logs
+2025-07-10 16:44:29,652 - SolanaMemecoinBot - INFO - solana_memecoin_bot:__init__:133 - SolanaMemecoinBot initialized successfully
+2025-07-10 16:44:29,653 - SolanaMemecoinBot - INFO - solana_memecoin_bot:__init__:136 - Performing direct PRAW connection test from SolanaMemecoinBot.__init__...
+2025-07-10 16:44:31,495 - SolanaMemecoinBot - INFO - solana_memecoin_bot:__init__:148 - Direct PRAW connection test from bot __init__ SUCCEEDED.
+2025-07-10 16:44:31,500 - WebInterface - INFO - app:__init__:79 - Web interface initialized
+2025-07-10 16:44:31,504 - SolanaMemecoinBot - INFO - solana_memecoin_bot:start:167 - Starting Solana Memecoin Trading Bot...
+2025-07-10 16:44:31,769 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_load_existing_positions:1013 - Loaded 0 existing positions
+2025-07-10 16:44:31,770 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_start_reddit_monitoring:273 - Starting Reddit monitoring...
+2025-07-10 16:44:31,771 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_start_reddit_monitoring:275 - Initializing Reddit real-time monitoring...
+2025-07-10 16:44:31,771 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_start_reddit_monitoring:284 - Starting Reddit real-time stream for subreddits: ['solana', 'SolanaMemeCoins', 'cryptomoonshots', 'memecoin', 'ShitcoinCentral', 'Daytrading', 'shitcoinmoonshots', 'SolanaNFT', 'memecoinmoonshots', 'memecoins', 'binance', 'CryptoCurrency'] with keywords: ['$', 'token', 'coin', 'pump', 'moon', 'gem', 'memecoin', 'solana', 'sol', 'CA:', 'contract', 'address', 'pumpfun', 'raydium', 'jupiter', 'dex', 'launched', 'presale', 'fair launch']
+2025-07-10 16:44:33,509 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_process_discoveries:466 - Starting discovery processing...
+2025-07-10 16:44:33,510 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_process_analysis:496 - Starting analysis processing...
+2025-07-10 16:44:33,511 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_process_trading:781 - Starting trading processing...
+2025-07-10 16:44:33,511 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_monitor_positions:877 - Starting position monitoring...
+2025-07-10 16:44:40,468 - WebInterface - INFO - app:handle_connect:499 - Client connected: 8xsaS6YuHyAn5We0AAAB
+2025-07-10 16:44:40,790 - WebInterface - INFO - app:handle_subscribe:515 - Client 8xsaS6YuHyAn5We0AAAB subscribed to trades
+2025-07-10 16:44:40,837 - WebInterface - INFO - app:handle_subscribe:515 - Client 8xsaS6YuHyAn5We0AAAB subscribed to discoveries
+2025-07-10 16:44:44,328 - WebInterface - INFO - app:handle_disconnect:507 - Client disconnected: 8xsaS6YuHyAn5We0AAAB
+2025-07-10 16:44:44,608 - WebInterface - INFO - app:handle_connect:499 - Client connected: bn6UX9a9ClU_IJzqAAAD
+2025-07-10 16:44:47,178 - WebInterface - INFO - app:handle_disconnect:507 - Client disconnected: bn6UX9a9ClU_IJzqAAAD
+2025-07-10 16:44:47,445 - WebInterface - INFO - app:handle_connect:499 - Client connected: bl_FlgDJ-Cq1oLVxAAAF
+2025-07-10 16:44:51,327 - WebInterface - INFO - app:api_config:313 - Configuration updated successfully from web interface.
+2025-07-10 16:45:00,431 - WebInterface - INFO - app:handle_disconnect:507 - Client disconnected: bl_FlgDJ-Cq1oLVxAAAF
+2025-07-10 16:45:00,950 - WebInterface - INFO - app:handle_connect:499 - Client connected: ZjKRKMZdTtke4fcLAAAH
+2025-07-10 16:45:01,289 - WebInterface - INFO - app:handle_subscribe:515 - Client ZjKRKMZdTtke4fcLAAAH subscribed to trades
+2025-07-10 16:45:01,296 - WebInterface - INFO - app:handle_subscribe:515 - Client ZjKRKMZdTtke4fcLAAAH subscribed to discoveries
+2025-07-10 16:45:02,106 - WebInterface - INFO - app:handle_disconnect:507 - Client disconnected: ZjKRKMZdTtke4fcLAAAH
+2025-07-10 16:45:02,401 - WebInterface - INFO - app:handle_connect:499 - Client connected: F-5K41sJLVmQWr7HAAAJ
+2025-07-10 16:45:14,019 - WebInterface - INFO - app:api_config:313 - Configuration updated successfully from web interface.
+2025-07-10 16:45:51,576 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_signal_handler:157 - Received signal 2, shutting down gracefully...
+2025-07-10 16:45:51,577 - SolanaMemecoinBot - INFO - solana_memecoin_bot:stop:219 - Stopping Solana Memecoin Trading Bot...
+2025-07-10 16:45:51,577 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_save_state:1022 - State saved successfully
+2025-07-10 16:45:51,577 - SolanaMemecoinBot - INFO - solana_memecoin_bot:stop:228 - Bot stopped successfully
+2025-07-10 16:45:51,579 - SolanaMemecoinBot - INFO - solana_memecoin_bot:stop:219 - Stopping Solana Memecoin Trading Bot...
+2025-07-10 16:45:51,579 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_save_state:1022 - State saved successfully
+2025-07-10 16:45:51,579 - SolanaMemecoinBot - INFO - solana_memecoin_bot:stop:228 - Bot stopped successfully
+2025-07-10 17:17:08,351 - WebInterface - INFO - logger:setup_logger:172 - Logger '{name}' initialized (instance: {bot_instance_id}) at effective level {logging.getLevelName(logger.getEffectiveLevel())}.
+2025-07-10 17:17:08,413 - WebInterface - INFO - app:__init__:79 - Web interface initialized
+2025-07-10 17:17:08,413 - SolanaMemecoinBot - INFO - logger:setup_logger:172 - Logger '{name}' initialized (instance: {bot_instance_id}) at effective level {logging.getLevelName(logger.getEffectiveLevel())}.
+2025-07-10 17:17:08,413 - SolanaMemecoinBot - DEBUG - logger:setup_logger:173 - This is a test DEBUG message from logger '{name}' to confirm DEBUG output.
+2025-07-10 17:17:08,413 - SolanaMemecoinBot - INFO - logger:setup_application_logging:362 - Application logging initialized
+2025-07-10 17:17:08,413 - SolanaMemecoinBot - INFO - logger:setup_application_logging:363 - Log level: DEBUG
+2025-07-10 17:17:08,413 - SolanaMemecoinBot - INFO - logger:setup_application_logging:364 - Log directory: logs
+2025-07-10 17:17:12,653 - SolanaMemecoinBot - INFO - solana_memecoin_bot:__init__:133 - SolanaMemecoinBot initialized successfully
+2025-07-10 17:17:12,653 - SolanaMemecoinBot - INFO - solana_memecoin_bot:__init__:136 - Performing direct PRAW connection test from SolanaMemecoinBot.__init__...
+2025-07-10 17:17:14,475 - SolanaMemecoinBot - INFO - solana_memecoin_bot:__init__:148 - Direct PRAW connection test from bot __init__ SUCCEEDED.
+2025-07-10 17:17:14,495 - WebInterface - INFO - app:__init__:79 - Web interface initialized
+2025-07-10 17:17:14,497 - SolanaMemecoinBot - INFO - solana_memecoin_bot:start:167 - Starting Solana Memecoin Trading Bot...
+2025-07-10 17:17:14,512 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_load_existing_positions:1013 - Loaded 0 existing positions
+2025-07-10 17:17:14,512 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_start_reddit_monitoring:273 - Starting Reddit monitoring...
+2025-07-10 17:17:14,512 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_start_reddit_monitoring:275 - Initializing Reddit real-time monitoring...
+2025-07-10 17:17:14,512 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_start_reddit_monitoring:284 - Starting Reddit real-time stream for subreddits: ['solana', 'SolanaMemeCoins', 'cryptomoonshots', 'memecoin', 'ShitcoinCentral', 'Daytrading', 'shitcoinmoonshots', 'SolanaNFT', 'memecoinmoonshots', 'memecoins', 'binance', 'CryptoCurrency'] with keywords: ['$', 'token', 'coin', 'pump', 'moon', 'gem', 'memecoin', 'solana', 'sol', 'CA:', 'contract', 'address', 'pumpfun', 'raydium', 'jupiter', 'dex', 'launched', 'presale', 'fair launch']
+2025-07-10 17:17:16,159 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_process_discoveries:466 - Starting discovery processing...
+2025-07-10 17:17:16,159 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_process_analysis:496 - Starting analysis processing...
+2025-07-10 17:17:16,159 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_process_trading:781 - Starting trading processing...
+2025-07-10 17:17:16,171 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_monitor_positions:877 - Starting position monitoring...
+2025-07-10 17:17:18,905 - WebInterface - INFO - app:handle_connect:499 - Client connected: lbPQ5aARwayTxHGSAAAB
+2025-07-10 17:17:28,948 - WebInterface - INFO - app:handle_disconnect:507 - Client disconnected: lbPQ5aARwayTxHGSAAAB
+2025-07-10 17:17:29,317 - WebInterface - INFO - app:handle_connect:499 - Client connected: fPJaA4ryi3wyJEoJAAAD
+2025-07-10 17:17:41,279 - WebInterface - INFO - app:api_config:313 - Configuration updated successfully from web interface.
+2025-07-10 17:17:50,728 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_signal_handler:157 - Received signal 2, shutting down gracefully...
+2025-07-10 17:17:50,728 - SolanaMemecoinBot - INFO - solana_memecoin_bot:stop:219 - Stopping Solana Memecoin Trading Bot...
+2025-07-10 17:17:50,728 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_save_state:1022 - State saved successfully
+2025-07-10 17:17:50,728 - SolanaMemecoinBot - INFO - solana_memecoin_bot:stop:228 - Bot stopped successfully
+2025-07-10 17:17:50,728 - SolanaMemecoinBot - INFO - solana_memecoin_bot:stop:219 - Stopping Solana Memecoin Trading Bot...
+2025-07-10 17:17:50,728 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_save_state:1022 - State saved successfully
+2025-07-10 17:17:50,728 - SolanaMemecoinBot - INFO - solana_memecoin_bot:stop:228 - Bot stopped successfully
+2025-07-10 18:11:26,386 - WebInterface - INFO - logger:setup_logger:172 - Logger '{name}' initialized (instance: {bot_instance_id}) at effective level {logging.getLevelName(logger.getEffectiveLevel())}.
+2025-07-10 18:11:26,449 - WebInterface - INFO - app:__init__:80 - Web interface initialized
+2025-07-10 18:11:26,452 - SolanaMemecoinBot - INFO - logger:setup_logger:172 - Logger '{name}' initialized (instance: {bot_instance_id}) at effective level {logging.getLevelName(logger.getEffectiveLevel())}.
+2025-07-10 18:11:26,453 - SolanaMemecoinBot - DEBUG - logger:setup_logger:173 - This is a test DEBUG message from logger '{name}' to confirm DEBUG output.
+2025-07-10 18:11:26,453 - SolanaMemecoinBot - INFO - logger:setup_application_logging:362 - Application logging initialized
+2025-07-10 18:11:26,453 - SolanaMemecoinBot - INFO - logger:setup_application_logging:363 - Log level: DEBUG
+2025-07-10 18:11:26,454 - SolanaMemecoinBot - INFO - logger:setup_application_logging:364 - Log directory: logs
+2025-07-10 18:11:30,359 - SolanaMemecoinBot - INFO - solana_memecoin_bot:__init__:133 - SolanaMemecoinBot initialized successfully
+2025-07-10 18:11:30,359 - SolanaMemecoinBot - INFO - solana_memecoin_bot:__init__:136 - Performing direct PRAW connection test from SolanaMemecoinBot.__init__...
+2025-07-10 18:11:32,173 - SolanaMemecoinBot - INFO - solana_memecoin_bot:__init__:148 - Direct PRAW connection test from bot __init__ SUCCEEDED.
+2025-07-10 18:11:32,180 - WebInterface - INFO - app:__init__:80 - Web interface initialized
+2025-07-10 18:11:32,189 - SolanaMemecoinBot - INFO - solana_memecoin_bot:start:167 - Starting Solana Memecoin Trading Bot...
+2025-07-10 18:11:32,192 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_load_existing_positions:1013 - Loaded 0 existing positions
+2025-07-10 18:11:32,193 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_start_reddit_monitoring:273 - Starting Reddit monitoring...
+2025-07-10 18:11:32,194 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_start_reddit_monitoring:275 - Initializing Reddit real-time monitoring...
+2025-07-10 18:11:32,194 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_start_reddit_monitoring:284 - Starting Reddit real-time stream for subreddits: ['solana', 'SolanaMemeCoins', 'cryptomoonshots', 'memecoin', 'ShitcoinCentral', 'Daytrading', 'shitcoinmoonshots', 'SolanaNFT', 'memecoinmoonshots', 'memecoins', 'binance', 'CryptoCurrency'] with keywords: ['$', 'token', 'coin', 'pump', 'moon', 'gem', 'memecoin', 'solana', 'sol', 'CA:', 'contract', 'address', 'pumpfun', 'raydium', 'jupiter', 'dex', 'launched', 'presale', 'fair launch']
+2025-07-10 18:11:33,856 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_process_discoveries:466 - Starting discovery processing...
+2025-07-10 18:11:33,857 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_process_analysis:496 - Starting analysis processing...
+2025-07-10 18:11:33,857 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_process_trading:781 - Starting trading processing...
+2025-07-10 18:11:33,857 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_monitor_positions:877 - Starting position monitoring...
+2025-07-10 18:11:36,907 - WebInterface - INFO - app:handle_connect:455 - Client connected: vjR4WeD8RnsEBG9sAAAB
+2025-07-10 18:12:03,965 - WebInterface - INFO - app:handle_disconnect:463 - Client disconnected: vjR4WeD8RnsEBG9sAAAB
+2025-07-10 18:12:04,409 - WebInterface - INFO - app:handle_connect:455 - Client connected: jRo2dc1Qwft4R8ATAAAD
+2025-07-10 18:12:09,043 - WebInterface - INFO - app:handle_disconnect:463 - Client disconnected: jRo2dc1Qwft4R8ATAAAD
+2025-07-10 18:12:09,360 - WebInterface - INFO - app:handle_connect:455 - Client connected: HYpKYZkGBPM8yDEPAAAF
+2025-07-10 18:12:09,843 - WebInterface - INFO - app:handle_subscribe:471 - Client HYpKYZkGBPM8yDEPAAAF subscribed to trades
+2025-07-10 18:12:09,847 - WebInterface - INFO - app:handle_subscribe:471 - Client HYpKYZkGBPM8yDEPAAAF subscribed to discoveries
+2025-07-10 18:12:13,032 - WebInterface - INFO - app:handle_disconnect:463 - Client disconnected: HYpKYZkGBPM8yDEPAAAF
+2025-07-10 18:12:13,339 - WebInterface - INFO - app:handle_connect:455 - Client connected: aHBVGrWKXyOcFZmyAAAH
+2025-07-10 18:12:15,352 - WebInterface - INFO - app:handle_disconnect:463 - Client disconnected: aHBVGrWKXyOcFZmyAAAH
+2025-07-10 18:12:15,663 - WebInterface - INFO - app:handle_connect:455 - Client connected: IZ5SscywCqQkHwrxAAAJ
+2025-07-10 18:12:15,823 - WebInterface - INFO - app:handle_subscribe:471 - Client IZ5SscywCqQkHwrxAAAJ subscribed to discoveries
+2025-07-10 18:12:17,877 - WebInterface - INFO - app:handle_disconnect:463 - Client disconnected: IZ5SscywCqQkHwrxAAAJ
+2025-07-10 18:12:18,193 - WebInterface - INFO - app:handle_connect:455 - Client connected: cWuYlcPGPAnmSLhqAAAL
+2025-07-10 18:12:23,457 - WebInterface - INFO - app:handle_disconnect:463 - Client disconnected: cWuYlcPGPAnmSLhqAAAL
+2025-07-10 18:12:23,777 - WebInterface - INFO - app:handle_connect:455 - Client connected: fLaF_uoyk9ZemsWCAAAN
+2025-07-10 18:12:34,223 - WebInterface - INFO - app:api_config:269 - Configuration saved successfully from web interface.
+2025-07-10 18:12:46,857 - WebInterface - INFO - app:handle_disconnect:463 - Client disconnected: fLaF_uoyk9ZemsWCAAAN
+2025-07-10 18:12:47,455 - WebInterface - INFO - app:handle_connect:455 - Client connected: JK-5KuAm8qRXarLLAAAP
+2025-07-10 18:12:49,010 - WebInterface - INFO - app:handle_disconnect:463 - Client disconnected: JK-5KuAm8qRXarLLAAAP
+2025-07-10 18:12:49,349 - WebInterface - INFO - app:handle_connect:455 - Client connected: Gehjpp9NITyPFw1rAAAR
+2025-07-10 18:12:55,654 - WebInterface - INFO - app:handle_disconnect:463 - Client disconnected: Gehjpp9NITyPFw1rAAAR
+2025-07-10 18:12:55,949 - WebInterface - INFO - app:handle_connect:455 - Client connected: jvVCArciImKasytIAAAT
+2025-07-10 18:12:56,191 - WebInterface - INFO - app:handle_subscribe:471 - Client jvVCArciImKasytIAAAT subscribed to trades
+2025-07-10 18:12:56,193 - WebInterface - INFO - app:handle_subscribe:471 - Client jvVCArciImKasytIAAAT subscribed to discoveries
+2025-07-10 18:16:30,872 - WebInterface - INFO - app:handle_disconnect:463 - Client disconnected: jvVCArciImKasytIAAAT
+2025-07-10 18:16:31,201 - WebInterface - INFO - app:handle_connect:455 - Client connected: ZXdNJ5qqQ0bkrjk2AAAV
+2025-07-10 18:16:34,528 - WebInterface - INFO - app:api_config:269 - Configuration saved successfully from web interface.
+2025-07-10 18:16:38,580 - WebInterface - INFO - app:handle_disconnect:463 - Client disconnected: ZXdNJ5qqQ0bkrjk2AAAV
+2025-07-10 18:16:39,133 - WebInterface - INFO - app:handle_connect:455 - Client connected: 3muTpuMj9NGfY7yVAAAX
+2025-07-10 18:16:40,389 - WebInterface - INFO - app:handle_disconnect:463 - Client disconnected: 3muTpuMj9NGfY7yVAAAX
+2025-07-10 18:16:40,712 - WebInterface - INFO - app:handle_connect:455 - Client connected: -Hmc59kCNTujeZEnAAAZ
+2025-07-10 18:23:44,742 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_signal_handler:157 - Received signal 2, shutting down gracefully...
+2025-07-10 18:23:44,742 - SolanaMemecoinBot - INFO - solana_memecoin_bot:stop:219 - Stopping Solana Memecoin Trading Bot...
+2025-07-10 18:23:44,743 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_save_state:1022 - State saved successfully
+2025-07-10 18:23:44,743 - SolanaMemecoinBot - INFO - solana_memecoin_bot:stop:228 - Bot stopped successfully
+2025-07-10 18:23:44,744 - SolanaMemecoinBot - INFO - solana_memecoin_bot:stop:219 - Stopping Solana Memecoin Trading Bot...
+2025-07-10 18:23:44,744 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_save_state:1022 - State saved successfully
+2025-07-10 18:23:44,745 - SolanaMemecoinBot - INFO - solana_memecoin_bot:stop:228 - Bot stopped successfully
+2025-07-10 18:24:05,059 - WebInterface - INFO - logger:setup_logger:172 - Logger '{name}' initialized (instance: {bot_instance_id}) at effective level {logging.getLevelName(logger.getEffectiveLevel())}.
+2025-07-10 18:24:05,115 - WebInterface - INFO - app:__init__:80 - Web interface initialized
+2025-07-10 18:24:05,118 - SolanaMemecoinBot - INFO - logger:setup_logger:172 - Logger '{name}' initialized (instance: {bot_instance_id}) at effective level {logging.getLevelName(logger.getEffectiveLevel())}.
+2025-07-10 18:24:05,118 - SolanaMemecoinBot - DEBUG - logger:setup_logger:173 - This is a test DEBUG message from logger '{name}' to confirm DEBUG output.
+2025-07-10 18:24:05,119 - SolanaMemecoinBot - INFO - logger:setup_application_logging:362 - Application logging initialized
+2025-07-10 18:24:05,119 - SolanaMemecoinBot - INFO - logger:setup_application_logging:363 - Log level: DEBUG
+2025-07-10 18:24:05,120 - SolanaMemecoinBot - INFO - logger:setup_application_logging:364 - Log directory: logs
+2025-07-10 18:24:09,083 - SolanaMemecoinBot - INFO - solana_memecoin_bot:__init__:133 - SolanaMemecoinBot initialized successfully
+2025-07-10 18:24:09,084 - SolanaMemecoinBot - INFO - solana_memecoin_bot:__init__:136 - Performing direct PRAW connection test from SolanaMemecoinBot.__init__...
+2025-07-10 18:24:10,950 - SolanaMemecoinBot - INFO - solana_memecoin_bot:__init__:148 - Direct PRAW connection test from bot __init__ SUCCEEDED.
+2025-07-10 18:24:10,962 - WebInterface - INFO - app:__init__:80 - Web interface initialized
+2025-07-10 18:24:10,975 - SolanaMemecoinBot - INFO - solana_memecoin_bot:start:167 - Starting Solana Memecoin Trading Bot...
+2025-07-10 18:24:10,979 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_load_existing_positions:1013 - Loaded 0 existing positions
+2025-07-10 18:24:10,980 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_start_reddit_monitoring:273 - Starting Reddit monitoring...
+2025-07-10 18:24:10,981 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_start_reddit_monitoring:275 - Initializing Reddit real-time monitoring...
+2025-07-10 18:24:10,981 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_start_reddit_monitoring:284 - Starting Reddit real-time stream for subreddits: ['solana', 'SolanaMemeCoins', 'cryptomoonshots', 'memecoin', 'ShitcoinCentral', 'Daytrading', 'shitcoinmoonshots', 'SolanaNFT', 'memecoinmoonshots', 'memecoins', 'binance', 'CryptoCurrency'] with keywords: ['$', 'token', 'coin', 'pump', 'moon', 'gem', 'memecoin', 'solana', 'sol', 'CA:', 'contract', 'address', 'pumpfun', 'raydium', 'jupiter', 'dex', 'launched', 'presale', 'fair launch']
+2025-07-10 18:24:12,561 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_process_discoveries:466 - Starting discovery processing...
+2025-07-10 18:24:12,562 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_process_analysis:496 - Starting analysis processing...
+2025-07-10 18:24:12,562 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_process_trading:781 - Starting trading processing...
+2025-07-10 18:24:12,563 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_monitor_positions:877 - Starting position monitoring...
+2025-07-10 18:24:13,546 - WebInterface - INFO - app:handle_connect:455 - Client connected: ZQ4HHu3890MPY3X6AAAB
+2025-07-10 18:30:30,612 - WebInterface - INFO - app:handle_disconnect:463 - Client disconnected: ZQ4HHu3890MPY3X6AAAB
+2025-07-10 18:30:30,945 - WebInterface - INFO - app:handle_connect:455 - Client connected: FfAq_KUxKnWTBieUAAAD
+2025-07-10 18:30:33,233 - WebInterface - INFO - app:handle_disconnect:463 - Client disconnected: FfAq_KUxKnWTBieUAAAD
+2025-07-10 18:30:33,583 - WebInterface - INFO - app:handle_connect:455 - Client connected: BpGphX0sZFD8hR6yAAAF
+2025-07-10 18:30:37,925 - WebInterface - INFO - app:handle_disconnect:463 - Client disconnected: BpGphX0sZFD8hR6yAAAF
+2025-07-10 18:30:38,226 - WebInterface - INFO - app:handle_connect:455 - Client connected: z2nsy-p3dwvyb4_oAAAH
+2025-07-10 18:30:38,753 - WebInterface - INFO - app:handle_subscribe:471 - Client z2nsy-p3dwvyb4_oAAAH subscribed to trades
+2025-07-10 18:30:38,756 - WebInterface - INFO - app:handle_subscribe:471 - Client z2nsy-p3dwvyb4_oAAAH subscribed to discoveries
+2025-07-10 18:30:55,699 - WebInterface - INFO - app:handle_disconnect:463 - Client disconnected: z2nsy-p3dwvyb4_oAAAH
+2025-07-10 18:30:56,010 - WebInterface - INFO - app:handle_connect:455 - Client connected: 0AxCkknQmS6YxuIbAAAJ
+2025-07-10 18:31:05,681 - WebInterface - INFO - app:handle_disconnect:463 - Client disconnected: 0AxCkknQmS6YxuIbAAAJ
+2025-07-10 18:31:05,970 - WebInterface - INFO - app:handle_connect:455 - Client connected: ooonA46Lcm4s-18pAAAL
+2025-07-10 18:31:06,191 - WebInterface - INFO - app:handle_subscribe:471 - Client ooonA46Lcm4s-18pAAAL subscribed to discoveries
+2025-07-10 18:31:14,061 - WebInterface - INFO - app:handle_disconnect:463 - Client disconnected: ooonA46Lcm4s-18pAAAL
+2025-07-10 18:31:14,619 - WebInterface - INFO - app:handle_connect:455 - Client connected: qxD4KO5wlIfMwylLAAAN
+2025-07-10 18:31:27,467 - WebInterface - INFO - app:handle_disconnect:463 - Client disconnected: qxD4KO5wlIfMwylLAAAN
+2025-07-10 18:31:27,786 - WebInterface - INFO - app:handle_connect:455 - Client connected: 3sM1Rdy7uEZd4wZzAAAP
+2025-07-10 18:31:34,819 - WebInterface - INFO - app:api_config:269 - Configuration saved successfully from web interface.
+2025-07-10 18:31:52,517 - WebInterface - INFO - app:api_config:269 - Configuration saved successfully from web interface.
+2025-07-10 18:32:04,477 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_signal_handler:157 - Received signal 2, shutting down gracefully...
+2025-07-10 18:32:04,478 - SolanaMemecoinBot - INFO - solana_memecoin_bot:stop:219 - Stopping Solana Memecoin Trading Bot...
+2025-07-10 18:32:04,478 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_save_state:1022 - State saved successfully
+2025-07-10 18:32:04,478 - SolanaMemecoinBot - INFO - solana_memecoin_bot:stop:228 - Bot stopped successfully
+2025-07-10 18:32:04,480 - SolanaMemecoinBot - INFO - solana_memecoin_bot:stop:219 - Stopping Solana Memecoin Trading Bot...
+2025-07-10 18:32:04,480 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_save_state:1022 - State saved successfully
+2025-07-10 18:32:04,481 - SolanaMemecoinBot - INFO - solana_memecoin_bot:stop:228 - Bot stopped successfully
+2025-07-10 18:33:27,706 - WebInterface - INFO - logger:setup_logger:172 - Logger '{name}' initialized (instance: {bot_instance_id}) at effective level {logging.getLevelName(logger.getEffectiveLevel())}.
+2025-07-10 18:33:27,757 - WebInterface - INFO - app:__init__:80 - Web interface initialized
+2025-07-10 18:33:27,760 - SolanaMemecoinBot - INFO - logger:setup_logger:172 - Logger '{name}' initialized (instance: {bot_instance_id}) at effective level {logging.getLevelName(logger.getEffectiveLevel())}.
+2025-07-10 18:33:27,760 - SolanaMemecoinBot - DEBUG - logger:setup_logger:173 - This is a test DEBUG message from logger '{name}' to confirm DEBUG output.
+2025-07-10 18:33:27,760 - SolanaMemecoinBot - INFO - logger:setup_application_logging:362 - Application logging initialized
+2025-07-10 18:33:27,761 - SolanaMemecoinBot - INFO - logger:setup_application_logging:363 - Log level: DEBUG
+2025-07-10 18:33:27,761 - SolanaMemecoinBot - INFO - logger:setup_application_logging:364 - Log directory: logs
+2025-07-10 18:33:31,026 - SolanaMemecoinBot - INFO - solana_memecoin_bot:__init__:133 - SolanaMemecoinBot initialized successfully
+2025-07-10 18:33:31,027 - SolanaMemecoinBot - INFO - solana_memecoin_bot:__init__:136 - Performing direct PRAW connection test from SolanaMemecoinBot.__init__...
+2025-07-10 18:33:32,855 - SolanaMemecoinBot - INFO - solana_memecoin_bot:__init__:148 - Direct PRAW connection test from bot __init__ SUCCEEDED.
+2025-07-10 18:33:32,861 - WebInterface - INFO - app:__init__:80 - Web interface initialized
+2025-07-10 18:33:32,872 - SolanaMemecoinBot - INFO - solana_memecoin_bot:start:167 - Starting Solana Memecoin Trading Bot...
+2025-07-10 18:33:32,876 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_load_existing_positions:1013 - Loaded 0 existing positions
+2025-07-10 18:33:32,877 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_start_reddit_monitoring:273 - Starting Reddit monitoring...
+2025-07-10 18:33:32,877 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_start_reddit_monitoring:275 - Initializing Reddit real-time monitoring...
+2025-07-10 18:33:32,878 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_start_reddit_monitoring:284 - Starting Reddit real-time stream for subreddits: ['solana', 'SolanaMemeCoins', 'cryptomoonshots', 'memecoin', 'ShitcoinCentral', 'Daytrading', 'shitcoinmoonshots', 'SolanaNFT', 'memecoinmoonshots', 'memecoins', 'binance', 'CryptoCurrency'] with keywords: ['$', 'token', 'coin', 'pump', 'moon', 'gem', 'memecoin', 'solana', 'sol', 'CA:', 'contract', 'address', 'pumpfun', 'raydium', 'jupiter', 'dex', 'launched', 'presale', 'fair launch']
+2025-07-10 18:33:34,760 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_process_discoveries:466 - Starting discovery processing...
+2025-07-10 18:33:34,761 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_process_analysis:496 - Starting analysis processing...
+2025-07-10 18:33:34,761 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_process_trading:781 - Starting trading processing...
+2025-07-10 18:33:34,762 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_monitor_positions:877 - Starting position monitoring...
+2025-07-10 18:33:39,103 - WebInterface - INFO - app:handle_connect:455 - Client connected: 4SvI6n4xz4g_afkbAAAB
+2025-07-10 18:33:42,204 - WebInterface - INFO - app:handle_disconnect:463 - Client disconnected: 4SvI6n4xz4g_afkbAAAB
+2025-07-10 18:33:42,538 - WebInterface - INFO - app:handle_connect:455 - Client connected: Cv8dgGyQUF93z0qfAAAD
+2025-07-10 18:34:03,571 - WebInterface - INFO - app:api_config:269 - Configuration saved successfully from web interface.
+2025-07-10 18:34:37,003 - WebInterface - INFO - app:api_config:269 - Configuration saved successfully from web interface.
+2025-07-10 18:34:50,055 - WebInterface - INFO - app:api_config:269 - Configuration saved successfully from web interface.
+2025-07-10 18:35:10,191 - WebInterface - INFO - app:api_config:269 - Configuration saved successfully from web interface.
+2025-07-10 18:36:04,014 - WebInterface - INFO - app:handle_disconnect:463 - Client disconnected: Cv8dgGyQUF93z0qfAAAD
+2025-07-10 18:36:04,381 - WebInterface - INFO - app:handle_connect:455 - Client connected: gfNEOmxGnG_0dtZSAAAF
+2025-07-10 18:36:04,508 - WebInterface - INFO - app:handle_subscribe:471 - Client gfNEOmxGnG_0dtZSAAAF subscribed to trades
+2025-07-10 18:36:04,509 - WebInterface - INFO - app:handle_subscribe:471 - Client gfNEOmxGnG_0dtZSAAAF subscribed to discoveries
+2025-07-10 18:39:11,983 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_signal_handler:157 - Received signal 2, shutting down gracefully...
+2025-07-10 18:39:11,983 - SolanaMemecoinBot - INFO - solana_memecoin_bot:stop:219 - Stopping Solana Memecoin Trading Bot...
+2025-07-10 18:39:11,983 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_save_state:1022 - State saved successfully
+2025-07-10 18:39:11,984 - SolanaMemecoinBot - INFO - solana_memecoin_bot:stop:228 - Bot stopped successfully
+2025-07-10 18:39:11,985 - SolanaMemecoinBot - INFO - solana_memecoin_bot:stop:219 - Stopping Solana Memecoin Trading Bot...
+2025-07-10 18:39:11,985 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_save_state:1022 - State saved successfully
+2025-07-10 18:39:11,986 - SolanaMemecoinBot - INFO - solana_memecoin_bot:stop:228 - Bot stopped successfully
+2025-07-10 18:41:06,099 - WebInterface - INFO - logger:setup_logger:172 - Logger '{name}' initialized (instance: {bot_instance_id}) at effective level {logging.getLevelName(logger.getEffectiveLevel())}.
+2025-07-10 18:41:06,149 - WebInterface - INFO - app:__init__:80 - Web interface initialized
+2025-07-10 18:41:06,152 - SolanaMemecoinBot - INFO - logger:setup_logger:172 - Logger '{name}' initialized (instance: {bot_instance_id}) at effective level {logging.getLevelName(logger.getEffectiveLevel())}.
+2025-07-10 18:41:06,152 - SolanaMemecoinBot - DEBUG - logger:setup_logger:173 - This is a test DEBUG message from logger '{name}' to confirm DEBUG output.
+2025-07-10 18:41:06,152 - SolanaMemecoinBot - INFO - logger:setup_application_logging:362 - Application logging initialized
+2025-07-10 18:41:06,153 - SolanaMemecoinBot - INFO - logger:setup_application_logging:363 - Log level: DEBUG
+2025-07-10 18:41:06,153 - SolanaMemecoinBot - INFO - logger:setup_application_logging:364 - Log directory: logs
+2025-07-10 18:41:09,332 - SolanaMemecoinBot - INFO - solana_memecoin_bot:__init__:133 - SolanaMemecoinBot initialized successfully
+2025-07-10 18:41:09,332 - SolanaMemecoinBot - INFO - solana_memecoin_bot:__init__:136 - Performing direct PRAW connection test from SolanaMemecoinBot.__init__...
+2025-07-10 18:41:11,119 - SolanaMemecoinBot - INFO - solana_memecoin_bot:__init__:148 - Direct PRAW connection test from bot __init__ SUCCEEDED.
+2025-07-10 18:41:11,125 - WebInterface - INFO - app:__init__:80 - Web interface initialized
+2025-07-10 18:41:11,136 - SolanaMemecoinBot - INFO - solana_memecoin_bot:start:167 - Starting Solana Memecoin Trading Bot...
+2025-07-10 18:41:11,140 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_load_existing_positions:1013 - Loaded 0 existing positions
+2025-07-10 18:41:11,141 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_start_reddit_monitoring:273 - Starting Reddit monitoring...
+2025-07-10 18:41:11,141 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_start_reddit_monitoring:275 - Initializing Reddit real-time monitoring...
+2025-07-10 18:41:11,142 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_start_reddit_monitoring:284 - Starting Reddit real-time stream for subreddits: ['solana', 'SolanaMemeCoins', 'cryptomoonshots', 'memecoin', 'ShitcoinCentral', 'Daytrading', 'shitcoinmoonshots', 'SolanaNFT', 'memecoinmoonshots', 'memecoins', 'binance', 'CryptoCurrency'] with keywords: ['$', 'token', 'coin', 'pump', 'moon', 'gem', 'memecoin', 'solana', 'sol', 'CA:', 'contract', 'address', 'pumpfun', 'raydium', 'jupiter', 'dex', 'launched', 'presale', 'fair launch']
+2025-07-10 18:41:12,518 - WebInterface - INFO - app:handle_connect:455 - Client connected: wuVYofxFOT4gKL_UAAAB
+2025-07-10 18:41:12,693 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_process_discoveries:466 - Starting discovery processing...
+2025-07-10 18:41:12,695 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_process_analysis:496 - Starting analysis processing...
+2025-07-10 18:41:12,695 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_process_trading:781 - Starting trading processing...
+2025-07-10 18:41:12,696 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_monitor_positions:877 - Starting position monitoring...
+2025-07-10 18:41:16,860 - WebInterface - INFO - app:handle_disconnect:463 - Client disconnected: wuVYofxFOT4gKL_UAAAB
+2025-07-10 18:41:17,237 - WebInterface - INFO - app:handle_connect:455 - Client connected: Ob7Sp89fFm_DOxRdAAAD
+2025-07-10 18:41:17,725 - WebInterface - INFO - app:handle_subscribe:471 - Client Ob7Sp89fFm_DOxRdAAAD subscribed to trades
+2025-07-10 18:41:17,730 - WebInterface - INFO - app:handle_subscribe:471 - Client Ob7Sp89fFm_DOxRdAAAD subscribed to discoveries
+2025-07-10 18:41:25,118 - WebInterface - INFO - app:handle_disconnect:463 - Client disconnected: Ob7Sp89fFm_DOxRdAAAD
+2025-07-10 18:41:25,428 - WebInterface - INFO - app:handle_connect:455 - Client connected: QIoqaM2yFlvm1LIwAAAF
+2025-07-10 18:41:29,805 - WebInterface - INFO - app:handle_disconnect:463 - Client disconnected: QIoqaM2yFlvm1LIwAAAF
+2025-07-10 18:41:30,124 - WebInterface - INFO - app:handle_connect:455 - Client connected: fXgsPwQccXceKGnmAAAH
+2025-07-10 18:41:30,300 - WebInterface - INFO - app:handle_subscribe:471 - Client fXgsPwQccXceKGnmAAAH subscribed to discoveries
+2025-07-10 18:41:36,225 - WebInterface - INFO - app:handle_disconnect:463 - Client disconnected: fXgsPwQccXceKGnmAAAH
+2025-07-10 18:41:36,512 - WebInterface - INFO - app:handle_connect:455 - Client connected: UxdHMYBxrqwPxfm-AAAJ
+2025-07-10 18:41:42,434 - WebInterface - INFO - app:handle_disconnect:463 - Client disconnected: UxdHMYBxrqwPxfm-AAAJ
+2025-07-10 18:41:42,759 - WebInterface - INFO - app:handle_connect:455 - Client connected: Oj-YF2Mlb7kGNvf6AAAL
+2025-07-10 18:41:51,833 - WebInterface - INFO - app:api_config:269 - Configuration saved successfully from web interface.
+2025-07-10 18:42:05,476 - WebInterface - INFO - app:api_config:269 - Configuration saved successfully from web interface.
+2025-07-10 18:42:15,252 - WebInterface - INFO - app:handle_disconnect:463 - Client disconnected: Oj-YF2Mlb7kGNvf6AAAL
+2025-07-10 18:42:15,544 - WebInterface - INFO - app:handle_connect:455 - Client connected: XlDUkNu_IuqrOw3KAAAN
+2025-07-10 18:42:15,768 - WebInterface - INFO - app:handle_subscribe:471 - Client XlDUkNu_IuqrOw3KAAAN subscribed to trades
+2025-07-10 18:42:16,077 - WebInterface - INFO - app:handle_subscribe:471 - Client XlDUkNu_IuqrOw3KAAAN subscribed to discoveries
+2025-07-10 18:42:27,609 - WebInterface - INFO - app:handle_disconnect:463 - Client disconnected: XlDUkNu_IuqrOw3KAAAN
+2025-07-10 18:42:27,931 - WebInterface - INFO - app:handle_connect:455 - Client connected: Y6CKrHVRRYBK6irlAAAP
+2025-07-10 18:42:30,930 - WebInterface - INFO - app:handle_disconnect:463 - Client disconnected: Y6CKrHVRRYBK6irlAAAP
+2025-07-10 18:42:31,494 - WebInterface - INFO - app:handle_connect:455 - Client connected: Gvs9gK_DGmgiKA2vAAAR
+2025-07-10 18:42:31,546 - WebInterface - INFO - app:handle_subscribe:471 - Client Gvs9gK_DGmgiKA2vAAAR subscribed to discoveries
+2025-07-10 18:42:33,803 - WebInterface - INFO - app:handle_disconnect:463 - Client disconnected: Gvs9gK_DGmgiKA2vAAAR
+2025-07-10 18:42:34,117 - WebInterface - INFO - app:handle_connect:455 - Client connected: N2DubpOn1AiqnjDKAAAT
+2025-07-10 18:42:39,826 - WebInterface - INFO - app:handle_disconnect:463 - Client disconnected: N2DubpOn1AiqnjDKAAAT
+2025-07-10 18:42:40,134 - WebInterface - INFO - app:handle_connect:455 - Client connected: jShwLIn9nJlA8t5CAAAV
+2025-07-10 18:54:46,041 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_signal_handler:157 - Received signal 2, shutting down gracefully...
+2025-07-10 18:54:46,041 - SolanaMemecoinBot - INFO - solana_memecoin_bot:stop:219 - Stopping Solana Memecoin Trading Bot...
+2025-07-10 18:54:46,042 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_save_state:1022 - State saved successfully
+2025-07-10 18:54:46,042 - SolanaMemecoinBot - INFO - solana_memecoin_bot:stop:228 - Bot stopped successfully
+2025-07-10 18:54:46,043 - SolanaMemecoinBot - INFO - solana_memecoin_bot:stop:219 - Stopping Solana Memecoin Trading Bot...
+2025-07-10 18:54:46,044 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_save_state:1022 - State saved successfully
+2025-07-10 18:54:46,044 - SolanaMemecoinBot - INFO - solana_memecoin_bot:stop:228 - Bot stopped successfully
+2025-07-10 20:15:39,410 - WebInterface - INFO - logger:setup_logger:172 - Logger '{name}' initialized (instance: {bot_instance_id}) at effective level {logging.getLevelName(logger.getEffectiveLevel())}.
+2025-07-10 20:15:39,472 - WebInterface - INFO - app:__init__:80 - Web interface initialized
+2025-07-10 20:15:39,475 - SolanaMemecoinBot - INFO - logger:setup_logger:172 - Logger '{name}' initialized (instance: {bot_instance_id}) at effective level {logging.getLevelName(logger.getEffectiveLevel())}.
+2025-07-10 20:15:39,476 - SolanaMemecoinBot - DEBUG - logger:setup_logger:173 - This is a test DEBUG message from logger '{name}' to confirm DEBUG output.
+2025-07-10 20:15:39,476 - SolanaMemecoinBot - INFO - logger:setup_application_logging:362 - Application logging initialized
+2025-07-10 20:15:39,477 - SolanaMemecoinBot - INFO - logger:setup_application_logging:363 - Log level: DEBUG
+2025-07-10 20:15:39,477 - SolanaMemecoinBot - INFO - logger:setup_application_logging:364 - Log directory: logs
+2025-07-10 20:15:44,144 - SolanaMemecoinBot - INFO - solana_memecoin_bot:__init__:133 - SolanaMemecoinBot initialized successfully
+2025-07-10 20:15:44,145 - SolanaMemecoinBot - INFO - solana_memecoin_bot:__init__:136 - Performing direct PRAW connection test from SolanaMemecoinBot.__init__...
+2025-07-10 20:15:46,028 - SolanaMemecoinBot - INFO - solana_memecoin_bot:__init__:148 - Direct PRAW connection test from bot __init__ SUCCEEDED.
+2025-07-10 20:15:46,036 - WebInterface - INFO - app:__init__:80 - Web interface initialized
+2025-07-10 20:15:46,043 - SolanaMemecoinBot - INFO - solana_memecoin_bot:start:167 - Starting Solana Memecoin Trading Bot...
+2025-07-10 20:15:46,047 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_load_existing_positions:1013 - Loaded 0 existing positions
+2025-07-10 20:15:46,049 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_start_reddit_monitoring:273 - Starting Reddit monitoring...
+2025-07-10 20:15:46,049 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_start_reddit_monitoring:275 - Initializing Reddit real-time monitoring...
+2025-07-10 20:15:46,050 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_start_reddit_monitoring:284 - Starting Reddit real-time stream for subreddits: ['solana', 'SolanaMemeCoins', 'cryptomoonshots', 'memecoin', 'ShitcoinCentral', 'Daytrading', 'shitcoinmoonshots', 'SolanaNFT', 'memecoinmoonshots', 'memecoins', 'binance', 'CryptoCurrency'] with keywords: ['$', 'token', 'coin', 'pump', 'moon', 'gem', 'memecoin', 'solana', 'sol', 'CA:', 'contract', 'address', 'pumpfun', 'raydium', 'jupiter', 'dex', 'launched', 'presale', 'fair launch']
+2025-07-10 20:15:47,439 - WebInterface - INFO - app:handle_connect:455 - Client connected: RJg6gbkQAEKglWinAAAB
+2025-07-10 20:15:47,626 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_process_discoveries:466 - Starting discovery processing...
+2025-07-10 20:15:47,627 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_process_analysis:496 - Starting analysis processing...
+2025-07-10 20:15:47,627 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_process_trading:781 - Starting trading processing...
+2025-07-10 20:15:47,627 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_monitor_positions:877 - Starting position monitoring...
+2025-07-10 20:16:05,333 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_signal_handler:157 - Received signal 2, shutting down gracefully...
+2025-07-10 20:16:05,334 - SolanaMemecoinBot - INFO - solana_memecoin_bot:stop:219 - Stopping Solana Memecoin Trading Bot...
+2025-07-10 20:16:05,335 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_save_state:1022 - State saved successfully
+2025-07-10 20:16:05,335 - SolanaMemecoinBot - INFO - solana_memecoin_bot:stop:228 - Bot stopped successfully
+2025-07-10 20:16:05,337 - SolanaMemecoinBot - INFO - solana_memecoin_bot:stop:219 - Stopping Solana Memecoin Trading Bot...
+2025-07-10 20:16:05,337 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_save_state:1022 - State saved successfully
+2025-07-10 20:16:05,337 - SolanaMemecoinBot - INFO - solana_memecoin_bot:stop:228 - Bot stopped successfully
+2025-07-10 20:24:30,470 - SolanaMemecoinBot - INFO - logger:setup_logger:172 - Logger '{name}' initialized (instance: {bot_instance_id}) at effective level {logging.getLevelName(logger.getEffectiveLevel())}.
+2025-07-10 20:24:33,714 - SolanaMemecoinBot - INFO - solana_memecoin_bot:__init__:133 - SolanaMemecoinBot initialized successfully
+2025-07-10 20:24:33,715 - SolanaMemecoinBot - INFO - solana_memecoin_bot:__init__:136 - Performing direct PRAW connection test from SolanaMemecoinBot.__init__...
+2025-07-10 20:24:35,506 - SolanaMemecoinBot - INFO - solana_memecoin_bot:__init__:148 - Direct PRAW connection test from bot __init__ SUCCEEDED.
+2025-07-10 20:24:35,507 - SolanaMemecoinBot - INFO - solana_memecoin_bot:start:167 - Starting Solana Memecoin Trading Bot...
+2025-07-10 20:24:35,512 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_load_existing_positions:1013 - Loaded 0 existing positions
+2025-07-10 20:24:35,513 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_start_reddit_monitoring:273 - Starting Reddit monitoring...
+2025-07-10 20:24:35,513 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_start_reddit_monitoring:275 - Initializing Reddit real-time monitoring...
+2025-07-10 20:24:35,514 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_start_reddit_monitoring:284 - Starting Reddit real-time stream for subreddits: ['solana', 'SolanaMemeCoins', 'cryptomoonshots', 'memecoin', 'ShitcoinCentral', 'Daytrading', 'shitcoinmoonshots', 'SolanaNFT', 'memecoinmoonshots', 'memecoins', 'binance', 'CryptoCurrency'] with keywords: ['$', 'token', 'coin', 'pump', 'moon', 'gem', 'memecoin', 'solana', 'sol', 'CA:', 'contract', 'address', 'pumpfun', 'raydium', 'jupiter', 'dex', 'launched', 'presale', 'fair launch']
+2025-07-10 20:24:37,156 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_process_discoveries:466 - Starting discovery processing...
+2025-07-10 20:24:37,156 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_process_analysis:496 - Starting analysis processing...
+2025-07-10 20:24:37,157 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_process_trading:781 - Starting trading processing...
+2025-07-10 20:24:37,157 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_monitor_positions:877 - Starting position monitoring...
+2025-07-10 20:24:55,646 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_signal_handler:157 - Received signal 2, shutting down gracefully...
+2025-07-10 20:24:55,647 - SolanaMemecoinBot - INFO - solana_memecoin_bot:stop:219 - Stopping Solana Memecoin Trading Bot...
+2025-07-10 20:24:55,647 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_save_state:1022 - State saved successfully
+2025-07-10 20:24:55,647 - SolanaMemecoinBot - INFO - solana_memecoin_bot:stop:228 - Bot stopped successfully
+2025-07-10 20:24:55,648 - SolanaMemecoinBot - INFO - solana_memecoin_bot:stop:219 - Stopping Solana Memecoin Trading Bot...
+2025-07-10 20:24:55,649 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_save_state:1022 - State saved successfully
+2025-07-10 20:24:55,649 - SolanaMemecoinBot - INFO - solana_memecoin_bot:stop:228 - Bot stopped successfully
+2025-07-10 20:26:31,598 - WebInterface - INFO - logger:setup_logger:172 - Logger '{name}' initialized (instance: {bot_instance_id}) at effective level {logging.getLevelName(logger.getEffectiveLevel())}.
+2025-07-10 20:26:31,656 - WebInterface - INFO - app:__init__:80 - Web interface initialized
+2025-07-10 20:26:31,660 - SolanaMemecoinBot - INFO - logger:setup_logger:172 - Logger '{name}' initialized (instance: {bot_instance_id}) at effective level {logging.getLevelName(logger.getEffectiveLevel())}.
+2025-07-10 20:26:31,660 - SolanaMemecoinBot - DEBUG - logger:setup_logger:173 - This is a test DEBUG message from logger '{name}' to confirm DEBUG output.
+2025-07-10 20:26:31,661 - SolanaMemecoinBot - INFO - logger:setup_application_logging:362 - Application logging initialized
+2025-07-10 20:26:31,662 - SolanaMemecoinBot - INFO - logger:setup_application_logging:363 - Log level: DEBUG
+2025-07-10 20:26:31,662 - SolanaMemecoinBot - INFO - logger:setup_application_logging:364 - Log directory: logs
+2025-07-10 20:26:34,778 - SolanaMemecoinBot - INFO - solana_memecoin_bot:__init__:133 - SolanaMemecoinBot initialized successfully
+2025-07-10 20:26:34,778 - SolanaMemecoinBot - INFO - solana_memecoin_bot:__init__:136 - Performing direct PRAW connection test from SolanaMemecoinBot.__init__...
+2025-07-10 20:26:36,567 - SolanaMemecoinBot - INFO - solana_memecoin_bot:__init__:148 - Direct PRAW connection test from bot __init__ SUCCEEDED.
+2025-07-10 20:26:36,574 - WebInterface - INFO - app:__init__:80 - Web interface initialized
+2025-07-10 20:26:36,579 - SolanaMemecoinBot - INFO - solana_memecoin_bot:start:167 - Starting Solana Memecoin Trading Bot...
+2025-07-10 20:26:36,583 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_load_existing_positions:1013 - Loaded 0 existing positions
+2025-07-10 20:26:36,584 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_start_reddit_monitoring:273 - Starting Reddit monitoring...
+2025-07-10 20:26:36,585 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_start_reddit_monitoring:275 - Initializing Reddit real-time monitoring...
+2025-07-10 20:26:36,585 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_start_reddit_monitoring:284 - Starting Reddit real-time stream for subreddits: ['solana', 'SolanaMemeCoins', 'cryptomoonshots', 'memecoin', 'ShitcoinCentral', 'Daytrading', 'shitcoinmoonshots', 'SolanaNFT', 'memecoinmoonshots', 'memecoins', 'binance', 'CryptoCurrency'] with keywords: ['$', 'token', 'coin', 'pump', 'moon', 'gem', 'memecoin', 'solana', 'sol', 'CA:', 'contract', 'address', 'pumpfun', 'raydium', 'jupiter', 'dex', 'launched', 'presale', 'fair launch']
+2025-07-10 20:26:37,903 - WebInterface - INFO - app:handle_connect:455 - Client connected: EeIPBIEh3DrEeoUcAAAB
+2025-07-10 20:26:39,166 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_process_discoveries:466 - Starting discovery processing...
+2025-07-10 20:26:39,166 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_process_analysis:496 - Starting analysis processing...
+2025-07-10 20:26:39,167 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_process_trading:781 - Starting trading processing...
+2025-07-10 20:26:39,167 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_monitor_positions:877 - Starting position monitoring...
+2025-07-10 20:27:26,316 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_signal_handler:157 - Received signal 2, shutting down gracefully...
+2025-07-10 20:27:26,317 - SolanaMemecoinBot - INFO - solana_memecoin_bot:stop:219 - Stopping Solana Memecoin Trading Bot...
+2025-07-10 20:27:26,317 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_save_state:1022 - State saved successfully
+2025-07-10 20:27:26,317 - SolanaMemecoinBot - INFO - solana_memecoin_bot:stop:228 - Bot stopped successfully
+2025-07-10 20:27:26,319 - SolanaMemecoinBot - INFO - solana_memecoin_bot:stop:219 - Stopping Solana Memecoin Trading Bot...
+2025-07-10 20:27:26,319 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_save_state:1022 - State saved successfully
+2025-07-10 20:27:26,320 - SolanaMemecoinBot - INFO - solana_memecoin_bot:stop:228 - Bot stopped successfully
+2025-07-10 20:43:30,062 - WebInterface - INFO - logger:setup_logger:172 - Logger '{name}' initialized (instance: {bot_instance_id}) at effective level {logging.getLevelName(logger.getEffectiveLevel())}.
+2025-07-10 20:43:30,126 - WebInterface - INFO - app:__init__:80 - Web interface initialized
+2025-07-10 20:43:30,130 - SolanaMemecoinBot - INFO - logger:setup_logger:172 - Logger '{name}' initialized (instance: {bot_instance_id}) at effective level {logging.getLevelName(logger.getEffectiveLevel())}.
+2025-07-10 20:43:30,131 - SolanaMemecoinBot - DEBUG - logger:setup_logger:173 - This is a test DEBUG message from logger '{name}' to confirm DEBUG output.
+2025-07-10 20:43:30,132 - SolanaMemecoinBot - INFO - logger:setup_application_logging:362 - Application logging initialized
+2025-07-10 20:43:30,133 - SolanaMemecoinBot - INFO - logger:setup_application_logging:363 - Log level: DEBUG
+2025-07-10 20:43:30,133 - SolanaMemecoinBot - INFO - logger:setup_application_logging:364 - Log directory: logs
+2025-07-10 20:43:33,327 - SolanaMemecoinBot - INFO - solana_memecoin_bot:__init__:133 - SolanaMemecoinBot initialized successfully
+2025-07-10 20:43:33,327 - SolanaMemecoinBot - INFO - solana_memecoin_bot:__init__:136 - Performing direct PRAW connection test from SolanaMemecoinBot.__init__...
+2025-07-10 20:43:35,172 - SolanaMemecoinBot - INFO - solana_memecoin_bot:__init__:148 - Direct PRAW connection test from bot __init__ SUCCEEDED.
+2025-07-10 20:43:35,180 - WebInterface - INFO - app:__init__:80 - Web interface initialized
+2025-07-10 20:43:35,185 - SolanaMemecoinBot - INFO - solana_memecoin_bot:start:167 - Starting Solana Memecoin Trading Bot...
+2025-07-10 20:43:35,189 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_load_existing_positions:1013 - Loaded 0 existing positions
+2025-07-10 20:43:35,189 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_start_reddit_monitoring:273 - Starting Reddit monitoring...
+2025-07-10 20:43:35,190 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_start_reddit_monitoring:275 - Initializing Reddit real-time monitoring...
+2025-07-10 20:43:35,190 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_start_reddit_monitoring:284 - Starting Reddit real-time stream for subreddits: ['solana', 'SolanaMemeCoins', 'cryptomoonshots', 'memecoin', 'ShitcoinCentral', 'Daytrading', 'shitcoinmoonshots', 'SolanaNFT', 'memecoinmoonshots', 'memecoins', 'binance', 'CryptoCurrency'] with keywords: ['$', 'token', 'coin', 'pump', 'moon', 'gem', 'memecoin', 'solana', 'sol', 'CA:', 'contract', 'address', 'pumpfun', 'raydium', 'jupiter', 'dex', 'launched', 'presale', 'fair launch']
+2025-07-10 20:43:36,827 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_process_discoveries:466 - Starting discovery processing...
+2025-07-10 20:43:36,828 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_process_analysis:496 - Starting analysis processing...
+2025-07-10 20:43:36,828 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_process_trading:781 - Starting trading processing...
+2025-07-10 20:43:36,828 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_monitor_positions:877 - Starting position monitoring...
+2025-07-10 20:43:36,917 - WebInterface - INFO - app:handle_connect:455 - Client connected: IGZMmgJejul3RzylAAAB
+2025-07-10 20:44:10,735 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_signal_handler:157 - Received signal 2, shutting down gracefully...
+2025-07-10 20:44:10,736 - SolanaMemecoinBot - INFO - solana_memecoin_bot:stop:219 - Stopping Solana Memecoin Trading Bot...
+2025-07-10 20:44:10,736 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_save_state:1022 - State saved successfully
+2025-07-10 20:44:10,736 - SolanaMemecoinBot - INFO - solana_memecoin_bot:stop:228 - Bot stopped successfully
+2025-07-10 20:44:10,738 - SolanaMemecoinBot - INFO - solana_memecoin_bot:stop:219 - Stopping Solana Memecoin Trading Bot...
+2025-07-10 20:44:10,738 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_save_state:1022 - State saved successfully
+2025-07-10 20:44:10,739 - SolanaMemecoinBot - INFO - solana_memecoin_bot:stop:228 - Bot stopped successfully
+2025-07-10 20:48:29,642 - WebInterface - INFO - logger:setup_logger:172 - Logger '{name}' initialized (instance: {bot_instance_id}) at effective level {logging.getLevelName(logger.getEffectiveLevel())}.
+2025-07-10 20:48:29,691 - WebInterface - INFO - app:__init__:80 - Web interface initialized
+2025-07-10 20:48:29,695 - SolanaMemecoinBot - INFO - logger:setup_logger:172 - Logger '{name}' initialized (instance: {bot_instance_id}) at effective level {logging.getLevelName(logger.getEffectiveLevel())}.
+2025-07-10 20:48:29,696 - SolanaMemecoinBot - DEBUG - logger:setup_logger:173 - This is a test DEBUG message from logger '{name}' to confirm DEBUG output.
+2025-07-10 20:48:29,696 - SolanaMemecoinBot - INFO - logger:setup_application_logging:362 - Application logging initialized
+2025-07-10 20:48:29,697 - SolanaMemecoinBot - INFO - logger:setup_application_logging:363 - Log level: DEBUG
+2025-07-10 20:48:29,697 - SolanaMemecoinBot - INFO - logger:setup_application_logging:364 - Log directory: logs
+2025-07-10 20:48:32,910 - SolanaMemecoinBot - INFO - solana_memecoin_bot:__init__:133 - SolanaMemecoinBot initialized successfully
+2025-07-10 20:48:32,910 - SolanaMemecoinBot - INFO - solana_memecoin_bot:__init__:136 - Performing direct PRAW connection test from SolanaMemecoinBot.__init__...
+2025-07-10 20:48:34,785 - SolanaMemecoinBot - INFO - solana_memecoin_bot:__init__:148 - Direct PRAW connection test from bot __init__ SUCCEEDED.
+2025-07-10 20:48:34,793 - WebInterface - INFO - app:__init__:80 - Web interface initialized
+2025-07-10 20:48:34,799 - SolanaMemecoinBot - INFO - solana_memecoin_bot:start:167 - Starting Solana Memecoin Trading Bot...
+2025-07-10 20:48:34,803 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_load_existing_positions:1013 - Loaded 0 existing positions
+2025-07-10 20:48:34,804 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_start_reddit_monitoring:273 - Starting Reddit monitoring...
+2025-07-10 20:48:34,804 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_start_reddit_monitoring:275 - Initializing Reddit real-time monitoring...
+2025-07-10 20:48:34,804 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_start_reddit_monitoring:284 - Starting Reddit real-time stream for subreddits: ['solana', 'SolanaMemeCoins', 'cryptomoonshots', 'memecoin', 'ShitcoinCentral', 'Daytrading', 'shitcoinmoonshots', 'SolanaNFT', 'memecoinmoonshots', 'memecoins', 'binance', 'CryptoCurrency'] with keywords: ['$', 'token', 'coin', 'pump', 'moon', 'gem', 'memecoin', 'solana', 'sol', 'CA:', 'contract', 'address', 'pumpfun', 'raydium', 'jupiter', 'dex', 'launched', 'presale', 'fair launch']
+2025-07-10 20:48:36,507 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_process_discoveries:466 - Starting discovery processing...
+2025-07-10 20:48:36,508 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_process_analysis:496 - Starting analysis processing...
+2025-07-10 20:48:36,508 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_process_trading:781 - Starting trading processing...
+2025-07-10 20:48:36,508 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_monitor_positions:877 - Starting position monitoring...
+2025-07-10 20:48:39,928 - WebInterface - INFO - app:handle_connect:455 - Client connected: 98mHmTes3DCPWHFxAAAB
+2025-07-10 20:48:40,278 - WebInterface - INFO - app:handle_subscribe:471 - Client 98mHmTes3DCPWHFxAAAB subscribed to trades
+2025-07-10 20:48:40,282 - WebInterface - INFO - app:handle_subscribe:471 - Client 98mHmTes3DCPWHFxAAAB subscribed to discoveries
+2025-07-10 20:48:41,911 - WebInterface - INFO - app:handle_connect:455 - Client connected: uZt1tdJwu5DldRN-AAAD
+2025-07-10 20:49:53,108 - WebInterface - INFO - app:handle_disconnect:463 - Client disconnected: 98mHmTes3DCPWHFxAAAB
+2025-07-10 20:49:53,506 - WebInterface - INFO - app:handle_connect:455 - Client connected: fJymrziLO55WuyqYAAAF
+2025-07-10 20:49:53,771 - WebInterface - INFO - app:handle_subscribe:471 - Client fJymrziLO55WuyqYAAAF subscribed to trades
+2025-07-10 20:49:53,778 - WebInterface - INFO - app:handle_subscribe:471 - Client fJymrziLO55WuyqYAAAF subscribed to discoveries
+2025-07-10 20:51:58,235 - WebInterface - INFO - app:handle_disconnect:463 - Client disconnected: fJymrziLO55WuyqYAAAF
+2025-07-10 20:51:58,716 - WebInterface - INFO - app:handle_connect:455 - Client connected: lms33qNPNZrULya2AAAH
+2025-07-10 20:52:01,793 - WebInterface - INFO - app:handle_disconnect:463 - Client disconnected: lms33qNPNZrULya2AAAH
+2025-07-10 20:52:02,284 - WebInterface - INFO - app:handle_connect:455 - Client connected: DELlaoppIHBnnAqcAAAJ
+2025-07-10 20:52:02,420 - WebInterface - INFO - app:handle_subscribe:471 - Client DELlaoppIHBnnAqcAAAJ subscribed to discoveries
+2025-07-10 20:52:03,174 - WebInterface - INFO - app:handle_disconnect:463 - Client disconnected: DELlaoppIHBnnAqcAAAJ
+2025-07-10 20:52:03,729 - WebInterface - INFO - app:handle_connect:455 - Client connected: 8X4RyMg8ustto9kHAAAL
+2025-07-10 20:52:06,441 - WebInterface - INFO - app:handle_disconnect:463 - Client disconnected: 8X4RyMg8ustto9kHAAAL
+2025-07-10 20:52:06,922 - WebInterface - INFO - app:handle_connect:455 - Client connected: jN-KNQ_MlmvlfNoGAAAN
+2025-07-10 20:52:09,701 - WebInterface - INFO - app:handle_disconnect:463 - Client disconnected: jN-KNQ_MlmvlfNoGAAAN
+2025-07-10 20:52:10,001 - WebInterface - INFO - app:handle_connect:455 - Client connected: SPgl2DpHPIj4pYIOAAAP
+2025-07-10 20:52:10,220 - WebInterface - INFO - app:handle_subscribe:471 - Client SPgl2DpHPIj4pYIOAAAP subscribed to trades
+2025-07-10 20:52:10,473 - WebInterface - INFO - app:handle_subscribe:471 - Client SPgl2DpHPIj4pYIOAAAP subscribed to discoveries
+2025-07-10 20:53:49,926 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_signal_handler:157 - Received signal 2, shutting down gracefully...
+2025-07-10 20:53:49,926 - SolanaMemecoinBot - INFO - solana_memecoin_bot:stop:219 - Stopping Solana Memecoin Trading Bot...
+2025-07-10 20:53:49,927 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_save_state:1022 - State saved successfully
+2025-07-10 20:53:49,927 - SolanaMemecoinBot - INFO - solana_memecoin_bot:stop:228 - Bot stopped successfully
+2025-07-10 20:53:49,928 - SolanaMemecoinBot - INFO - solana_memecoin_bot:stop:219 - Stopping Solana Memecoin Trading Bot...
+2025-07-10 20:53:49,928 - SolanaMemecoinBot - INFO - solana_memecoin_bot:_save_state:1022 - State saved successfully
+2025-07-10 20:53:49,928 - SolanaMemecoinBot - INFO - solana_memecoin_bot:stop:228 - Bot stopped successfully
