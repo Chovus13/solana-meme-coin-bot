@@ -6,6 +6,8 @@ asyncio-mqtt>=0.16.1
 websockets>=12.0 # Common recent version
 python-dotenv>=1.0.0
 
+matplotlib
+
 # Social Media APIs
 tweepy>=4.12.0 # Loosened upper cap
 praw>=7.7.0 # Loosened upper cap
@@ -15,11 +17,11 @@ TikTokApi>=7.0.0 # Assuming it's this one, ensure it's Py3.12 compatible
 python-telegram-bot>=20.0 # Major version update, check for breaking changes if your code uses it heavily
 
 # Blockchain and Trading - Specific set for compatibility
-solana==0.32.0
-solders==0.17.0
-anchorpy==0.21.0
-construct-typing==0.5.1
-construct>=2.10.67 # Usually a dep of construct-typing, pinning can help
+solana
+solders
+anchorpy
+construct-typing
+construct # Usually a dep of construct-typing, pinning can help
 
 # AI and Data Analysis
 pandas>=2.0.0 # Pandas 2.x is good for modern Python
